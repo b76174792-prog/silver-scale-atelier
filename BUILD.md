@@ -21,6 +21,6 @@ Build 校验锁定哈希，编译管理器、身份/启动帮助程序及 PackTo
 
 合成 DOM、单元测试和本地 GUI 测试辅助回归，不能替代真实官方宿主的普通/dot 独立验收及同安装包的干净 Windows 安装使用结果。准确兼容状态见 README 矩阵和对应发行记录。
 
-只读取证脚本 `scripts/Inspect-ThemeSurface.mjs` 不进入安装载荷。它分别报告观察是否完成、旧空输入采集门槛及活动结构契约；`observed` 不代表生产兼容验收通过。3930 仍需真实运行证据才能解除生产拒绝。
+只读取证脚本 `scripts/Inspect-ThemeSurface.mjs` 不进入安装载荷。它分别报告观察是否完成、旧普通会话采集门槛及活动结构契约；`observed` 不代表生产兼容验收通过。3930 的真实普通首页/短会话及 dot 长会话已匹配共享契约，精确版本接入生产候选；仍需新最终安装包的生产和独立安装验收。旧采集器在首页/dot 报 `layout-missing` 或在生成/草稿期间报告未就绪时，保留原 blocked，不将它改为 PASS。
 
 软件许可与组件索引见 `src/LICENSE.txt`、`src/THIRD-PARTY.txt` 及 `vendor`/`src/upstream` 中的完整许可。面向用户的说明集中于 `src/用户须知.txt`。

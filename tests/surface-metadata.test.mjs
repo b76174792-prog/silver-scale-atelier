@@ -214,13 +214,13 @@ test('new-version discovery retains exact identity, attachment and protection re
  assert.equal(report.status,'blocked');assert.equal(report.metadata.surface,'protected');assert.equal(io.fixture.rectangleReads,0);
 });
 
-test('26.930.3930.0 is inspectable with exact owned identity while production remains unsupported',async()=>{
+test('26.930.3930.0 retains exact owned inspection after candidate production admission',async()=>{
  const client={...fixtureClient,version:'26.930.3930.0'};
  const {resolveClientCompatibility}=await import('../src/runtime/compatibility.mjs');
- assert.equal(resolveClientCompatibility(client).status,'unsupported');
+ assert.equal(resolveClientCompatibility(client).status,'supported');
  const io=inspectionFixture({kind:'default',client}),report=await inspection.inspectThemeSurface({mode:'standard',receiptPath:'fixture'},io.transport);
  assert.equal(report.status,'observed');assert.equal(report.identityVerified,true);assert.equal(report.evidenceOnly,true);
- const encoded=JSON.parse(inspection.encodeInspectionReport(report));assert.equal(encoded.clientVersion,client.version);assert.equal(encoded.supportLevel,'discovery-only');
+ const encoded=JSON.parse(inspection.encodeInspectionReport(report));assert.equal(encoded.clientVersion,client.version);assert.equal(encoded.supportLevel,'production-candidate');
  for(const change of [{version:'26.930.3931.0'},{version:'26.930.3930.1'},{family:'Fake.Codex'},{signature:'Developer'},{architecture:'Arm64'}]){
   const refused=inspectionFixture({client:{...client,...change}}),result=await inspection.inspectThemeSurface({mode:'dot',receiptPath:'fixture'},refused.transport);
   assert.equal(result.status,'blocked');assert.equal(refused.calls.includes('fetch'),false);

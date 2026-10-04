@@ -13,9 +13,9 @@
 
 兼容范围：2026-09-25（含）起，按有来源的精确包版本登记。
 宿主身份：OpenAI.Codex_2p2nqsd0c76g0，Store，x64。
-26.930.2377.0：普通/dot 已有 0.5.9 实机基线；本 Beta 最终包回归待完成。
-26.930.3930.0：原包仅 Stage，真实运行与普通/dot 验收待完成；当前拒绝生产加载。
-以上待验证状态不是稳定支持声明。正式发布页及同包验收记录会列出最终结果。
+26.930.2377.0：084ebe8f候选的普通空/短/完成长回复、dot长会话及真实重建已有实测；新最终包回归待完成。
+26.930.3930.0：官方实机普通首页/短会话与dot长会话结构匹配，精确版本复用共享适配器进入生产候选；新最终包实测待完成。
+结构匹配与生产候选不是稳定支持声明，旧包实测不改名为新包结果。正式发布页及同包验收记录会列出最终结果。
 
 安装位置：%LOCALAPPDATA%\Programs\SilverScaleAtelierManager。
 设置实际物理位置：%LOCALAPPDATA%\Packages\OpenAI.Codex_2p2nqsd0c76g0\LocalCache\Local\SilverScaleAtelierManager。
