@@ -152,17 +152,43 @@ export async function buildTheme(name,sessionId,adapter=getAdapter('local-experi
   const edgeStructure=resolvedStructure(),edgeNodes=edgeStructure.nodes;
   const activeEdge=node=>{
    if(!node||!root.contains(node))return false;
+   if(node.childElementCount!==0||getComputedStyle(node).pointerEvents!=='none')return false;
    const box=node.getBoundingClientRect();if(!(box.width>0&&box.height>0))return false;
    for(let e=node,depth=0;e&&depth<48;e=e.parentElement,depth++){
     const style=getComputedStyle(e);
-    if(e.hasAttribute('hidden')||e.hasAttribute('inert')||e.getAttribute('aria-hidden')==='true'||style.display==='none'||['hidden','collapse'].includes(style.visibility)||Number(style.opacity)===0)return false;
+    // Empty pointer-inert native fades are aria-hidden decorations. Their ancestors
+    // still cannot be inactive; a contents portal may hide siblings while its fade
+    // explicitly restores visibility, as in the native CSS-anchor header.
+    if(e.hasAttribute('hidden')||e.hasAttribute('inert')||(e!==node&&e.getAttribute('aria-hidden')==='true')||style.display==='none'||(['hidden','collapse'].includes(style.visibility)&&style.display!=='contents')||Number(style.opacity)===0)return false;
     if(e===root)return true;
    }
    return false;
   };
   const frame=edgeNodes.pageRoot?.closest('[class*="_MainContentFrame_"]');
+  const activeAnchor=node=>{
+   if(!node||!edgeNodes.pageRoot.contains(node)||node.childElementCount!==0||getComputedStyle(node).pointerEvents!=='none'||node.getBoundingClientRect().width<=0)return false;
+   // A CSS anchor can intentionally have zero height and aria-hidden decoration
+   // semantics; every ancestor of its actual owner must still be active.
+   for(let e=node,depth=0;e&&depth<48;e=e.parentElement,depth++){
+    const style=getComputedStyle(e);
+    if(e.hasAttribute('hidden')||e.hasAttribute('inert')||(e!==node&&e.getAttribute('aria-hidden')==='true')||style.display==='none'||['hidden','collapse'].includes(style.visibility)||Number(style.opacity)===0)return false;
+    if(e===root)return true;
+   }
+   return false;
+  };
   const topCandidates=edgeStructure.ok&&edgeStructure.page==='conversation'&&frame&&edgeNodes.shell.contains(frame)
    ?Array.from(frame.querySelectorAll('[class*="_MainContentTopFade_"]')).filter(e=>e.closest('[class*="_MainContentFrame_"]')===frame&&e.parentElement.contains(edgeNodes.pageRoot)&&activeEdge(e)):[];
+  if(edgeStructure.ok&&edgeStructure.page==='conversation'){
+   const anchors=Array.from(edgeNodes.pageRoot.querySelectorAll('*')).filter(e=>getComputedStyle(e).anchorName!=='none');
+   for(const e of edgeNodes.shell.querySelectorAll('[class*="_background_"][class~="top-0"][class~="pointer-events-none"]')){
+    const name=getComputedStyle(e).positionAnchor;
+    if(!name.startsWith('--')||!activeEdge(e))continue;
+    const owners=anchors.filter(a=>getComputedStyle(a).anchorName.split(',').map(x=>x.trim()).includes(name));
+    if(owners.length!==1||!activeAnchor(owners[0]))continue;
+    const owner=owners[0],a=owner.getBoundingClientRect(),b=e.getBoundingClientRect();
+    if(a.width>0&&Math.abs(a.left-b.left)<1&&Math.abs(a.width-b.width)<1&&Math.abs(a.top-b.top)<1)topCandidates.push(e);
+   }
+  }
   const bottomCandidates=edgeStructure.ok&&edgeStructure.page==='conversation'&&edgeNodes.footer
    ?Array.from(edgeNodes.footer.querySelectorAll('[class~="bg-gradient-to-t"][class~="from-surface"]')).filter(activeEdge):[];
   for(const [slot,candidates] of [['conversation.edge.top',topCandidates],['conversation.edge.bottom',bottomCandidates]]){
@@ -170,9 +196,10 @@ export async function buildTheme(name,sessionId,adapter=getAdapter('local-experi
    for(const old of document.querySelectorAll('[data-ct-slot="'+slot+'"]'))if(old!==target)old.removeAttribute('data-ct-slot');
    if(target)markSlot([target],slot,slots);
   }`);
-  replace(/const structuralSelectors = \[/,`const structuralSelectors = ['[class*="_MainContentTopFade_"], [class~="bg-gradient-to-t"][class~="from-surface"]',`);
+  const edgeSelector='[class*="_MainContentTopFade_"], [class*="_background_"][class~="top-0"][class~="pointer-events-none"], [class~="bg-gradient-to-t"][class~="from-surface"]';
+  replace(/const structuralSelectors = \[/,`const structuralSelectors = [${JSON.stringify(edgeSelector)},`);
   replace(/if \(mutation.type === 'attributes'\) \{/,`if (mutation.type === 'attributes') {
-   if(target?.matches('[class*="_MainContentTopFade_"], [class~="bg-gradient-to-t"][class~="from-surface"]')){needsApply=true;continue;}`);
+   if(['aria-hidden','hidden','inert'].includes(mutation.attributeName)||target?.matches(${JSON.stringify(edgeSelector)})||target?.querySelector(${JSON.stringify(edgeSelector)})){needsApply=true;continue;}`);
   replace(/const editor = editors\.find\(isVisible\) \?\? editors\[0\] \?\? null;/,'const editor = resolvedStructure().nodes.editor;');
   replace(/const appMain = appMainCandidates\.find\(isVisible\) \?\? appMainCandidates\[0\] \?\? null;/,'const appMain = resolvedStructure().nodes.main;');
   replace(/const visibleConversation = \[\.\.\.document\.querySelectorAll\(\s*adapter\.selectors\.conversation\s*\)\]\.find\(isVisible\);/,'const visibleConversation = resolvedStructure().nodes.messageRegion;');

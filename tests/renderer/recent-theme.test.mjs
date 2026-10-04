@@ -24,24 +24,34 @@ const snapshot=page=>page.production(`(()=>{const r=window.__codexThemeRuntime,c
 
 for(const [name,html] of [['ordinary',ordinary],['dot',dot]])test(`active ${name} native edge fades follow the night surface and restore`,async()=>{
  const nativeStyle='<style>:root{--color-surface:white;--app-color-background-surface:white}.native-edge{background-image:linear-gradient(var(--color-surface),transparent)}.native-bottom{background-image:linear-gradient(to top,var(--color-surface),transparent)}</style>';
- const top='<div id="active-top-fade" class="_MainContentTopFade_fixture _background_fixture native-edge" style="position:absolute;top:0;width:850px;height:40px"></div>';
- const bottom='<div id="active-bottom-fade" class="pointer-events-none absolute bg-gradient-to-t from-surface native-bottom" style="width:800px;height:32px"></div>';
+ const top='<div id="active-top-fade" aria-hidden="true" class="_MainContentTopFade_fixture _background_fixture native-edge" style="pointer-events:none;position:absolute;top:0;width:850px;height:40px"></div>';
+ const bottom='<div id="active-bottom-fade" aria-hidden="true" class="pointer-events-none absolute bg-gradient-to-t from-surface native-bottom" style="pointer-events:none;width:800px;height:32px"></div>';
  let fixture=html.replace('<body>',nativeStyle+'<body>');
  const pageStart=name==='dot'?'<main class="messaging-root':'<div data-request-input-activity-root';
  fixture=fixture.replace(pageStart,`<div class="_MainContentFrame_fixture" style="position:relative;width:900px;height:700px"><div style="position:relative;width:900px;height:700px">${top}${pageStart}`)
   .replace('</section>','</div></div><div id="outside-top-fade" class="_MainContentTopFade_fixture native-edge" style="width:850px;height:40px"></div></section>');
  const footerStart=name==='dot'?'<div class="conversation-footer" style="height:80px;width:800px">':'<div data-thread-scroll-footer style="width:800px;height:90px">';
  fixture=fixture.replace(footerStart,footerStart+bottom);
+ if(name==='dot'){
+  fixture=fixture.replace(top,'<div class="_MainContentTopFade_fixture native-edge" aria-hidden="true" style="pointer-events:none;opacity:0;position:absolute;width:850px;height:40px"></div>')
+   .replace('<main class="messaging-root messaging-embedded" style="display:block;width:900px;height:700px">','<main class="messaging-root messaging-embedded" style="display:block;width:900px;height:700px"><div id="native-anchor-parent"><div aria-hidden="true" style="pointer-events:none;anchor-name:--fixture-dot-edge;position:absolute;top:0;left:0;width:850px;height:0"></div></div>')
+   .replace('<div id="outside-top-fade"','<div style="display:contents;visibility:hidden"><div id="active-top-fade" aria-hidden="true" class="pointer-events-none top-0 _background_fixture native-edge" style="pointer-events:none;visibility:visible;position:absolute;position-anchor:--fixture-dot-edge;top:0;left:0;width:850px;height:40px"></div></div><div id="outside-top-fade"');
+ }
  await withRendererFixture({browserPath:process.env.SILVER_SCALE_TEST_BROWSER,html:fixture},async page=>{
   const read=()=>page.evaluate(`(()=>{const bg=id=>getComputedStyle(document.getElementById(id)).backgroundImage;return {top:bg('active-top-fade'),bottom:bg('active-bottom-fade'),outside:bg('outside-top-fade'),body:getComputedStyle(document.body).getPropertyValue('--app-color-background-surface'),slots:document.querySelectorAll('[data-ct-slot^="conversation.edge."]').length};})()`);
   const before=await read();await page.production(install);await page.production(theme.expression);await page.production(updateExpression(true,false,{theme:'astra-night'}));
   const on=await read();assert.notEqual(on.top,before.top,'top white fade changes');assert.notEqual(on.bottom,before.bottom,'bottom white fade changes');
   assert.ok(on.top.includes('32, 35, 49'),on.top);assert.ok(on.bottom.includes('32, 35, 49'),on.bottom);assert.equal(on.outside,before.outside);assert.equal(on.body,before.body);assert.equal(on.slots,2);
+  if(name==='dot')for(const attribute of ['aria-hidden','inert']){
+   await page.evaluate(`document.getElementById('native-anchor-parent').setAttribute(${JSON.stringify(attribute)},${JSON.stringify(attribute==='aria-hidden'?'true':'')})`);await page.evaluate('new Promise(r=>setTimeout(r,350))');
+   const inactive=await read();assert.equal(inactive.top,before.top,'inactive anchor ancestry cannot authorize the portal');assert.equal(inactive.slots,1);assert.equal((await snapshot(page)).figureCount,1,'the page remains active');
+   await page.evaluate(`document.getElementById('native-anchor-parent').removeAttribute(${JSON.stringify(attribute)})`);await page.evaluate('new Promise(r=>setTimeout(r,350))');assert.deepEqual(await read(),on,'active anchor restoration restores the portal');
+  }
   await page.production(theme.expression);assert.equal((await read()).slots,2,'repeat apply keeps exactly two edge targets');
   await page.evaluate(`for(const id of ['active-top-fade','active-bottom-fade']){const e=document.getElementById(id),copy=e.cloneNode(true);copy.id=id+'-ambiguous';copy.removeAttribute('data-ct-slot');e.parentElement.appendChild(copy);}`);
   await page.evaluate('new Promise(r=>setTimeout(r,350))');
   const ambiguous=await read();assert.equal(ambiguous.slots,0,'ambiguous edge candidates stay native');assert.equal(ambiguous.top,before.top);assert.equal(ambiguous.bottom,before.bottom);
-  await page.evaluate(`document.getElementById('active-top-fade-ambiguous').setAttribute('aria-hidden','true');document.getElementById('active-bottom-fade-ambiguous').setAttribute('inert','');`);
+  await page.evaluate(`const copy=document.getElementById('active-top-fade-ambiguous'),wrapper=document.createElement('div');wrapper.id='inactive-edge-parent';wrapper.setAttribute('aria-hidden','true');copy.parentElement.appendChild(wrapper);wrapper.appendChild(copy);document.getElementById('active-bottom-fade-ambiguous').setAttribute('inert','');`);
   await page.evaluate('new Promise(r=>setTimeout(r,350))');assert.deepEqual(await read(),on,'inactive cached edges do not block the unique active edges');
   const hidden=await page.evaluate(`['active-top-fade-ambiguous','active-bottom-fade-ambiguous'].map(id=>getComputedStyle(document.getElementById(id)).backgroundImage)`);assert.deepEqual(hidden,[before.top,before.bottom],'inactive copies keep their native gradients');
   await page.evaluate(`document.getElementById('active-top-fade-ambiguous').remove();document.getElementById('active-bottom-fade-ambiguous').remove();`);
