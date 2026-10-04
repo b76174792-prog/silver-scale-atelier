@@ -84,7 +84,7 @@ export async function buildTheme(name,sessionId,adapter=getAdapter('local-experi
  :root[data-ct-theme="${manifest.id}"][data-ct-color-scheme="light"]${adapter.surfaceContract==='active-v1'?' [data-ct-slot]':''} {color-scheme:light;}
  ${adapter.surfaceContract==='active-v1'?`${paletteScope} .sidebar-navigation {background:var(--ss-sidebar)!important;color:var(--ss-text)!important;}`:''}
  ${adapter.surfaceContract==='active-v1'?`${paletteScope} [data-ct-slot="conversation"] [data-markdown-text-style="assistant-message"] {color:var(--ss-text)!important;}`:''}
- ${adapter.surfaceContract==='active-v1'?`${paletteScope} :is([data-ct-slot="conversation.edge.top"],[data-ct-slot="conversation.edge.bottom"]) {--color-surface:var(--ss-surface)!important;}`:''}
+ ${adapter.surfaceContract==='active-v1'?`${paletteScope} :is([data-ct-slot="conversation.edge.top"],[data-ct-slot="conversation.edge.bottom"],[data-ct-slot="conversation.edge.fill"]) {--color-surface:var(--ss-surface)!important;}`:''}
  :root[data-ct-theme="${manifest.id}"] [data-chatgpt-agent-turn-start] {color:var(--ss-muted)!important;}
  :root[data-ct-theme="${manifest.id}"] [data-app-action-timeline-scroll] a {color:var(--ss-accent)!important;}
  :root[data-ct-theme="${manifest.id}"] [data-composer-markdown] .placeholder::before {color:var(--ss-muted)!important;}
@@ -150,7 +150,7 @@ export async function buildTheme(name,sessionId,adapter=getAdapter('local-experi
   // Bind only unique visible edges related to the confirmed page; never theme body probes.
   replace(/const slots = \['app.shell', `adapter:\$\{adapter.id\}`\];/,`const slots = ['app.shell', \`adapter:\${adapter.id}\`];
   const edgeStructure=resolvedStructure(),edgeNodes=edgeStructure.nodes;
-  const activeEdge=node=>{
+  const activeEdge=(node,allowedDecorativeParent=null)=>{
    if(!node||!root.contains(node))return false;
    if(node.childElementCount!==0||getComputedStyle(node).pointerEvents!=='none')return false;
    const box=node.getBoundingClientRect();if(!(box.width>0&&box.height>0))return false;
@@ -159,7 +159,7 @@ export async function buildTheme(name,sessionId,adapter=getAdapter('local-experi
     // Empty pointer-inert native fades are aria-hidden decorations. Their ancestors
     // still cannot be inactive; a contents portal may hide siblings while its fade
     // explicitly restores visibility, as in the native CSS-anchor header.
-    if(e.hasAttribute('hidden')||e.hasAttribute('inert')||(e!==node&&e.getAttribute('aria-hidden')==='true')||style.display==='none'||(['hidden','collapse'].includes(style.visibility)&&style.display!=='contents')||Number(style.opacity)===0)return false;
+    if(e.hasAttribute('hidden')||e.hasAttribute('inert')||(e!==node&&e!==allowedDecorativeParent&&e.getAttribute('aria-hidden')==='true')||style.display==='none'||(['hidden','collapse'].includes(style.visibility)&&(allowedDecorativeParent||style.display!=='contents'))||Number(style.opacity)===0)return false;
     if(e===root)return true;
    }
    return false;
@@ -189,16 +189,32 @@ export async function buildTheme(name,sessionId,adapter=getAdapter('local-experi
     if(a.width>0&&Math.abs(a.left-b.left)<1&&Math.abs(a.width-b.width)<1&&Math.abs(a.top-b.top)<1)topCandidates.push(e);
    }
   }
-  const bottomCandidates=edgeStructure.ok&&edgeStructure.page==='conversation'&&edgeNodes.footer
-   ?Array.from(edgeNodes.footer.querySelectorAll('[class~="bg-gradient-to-t"][class~="from-surface"]')).filter(activeEdge):[];
-  for(const [slot,candidates] of [['conversation.edge.top',topCandidates],['conversation.edge.bottom',bottomCandidates]]){
+  const footer=edgeNodes.footer,scroll=edgeNodes.scrollViewport;
+  const footerBottomCandidates=edgeStructure.ok&&edgeStructure.page==='conversation'&&footer
+   ?Array.from(footer.querySelectorAll('[class~="bg-gradient-to-t"][class~="from-surface"]')).filter(e=>activeEdge(e)):[];
+  const stickyBottomCandidates=edgeStructure.ok&&edgeStructure.page==='conversation'&&edgeStructure.mode==='standard'&&footer&&scroll
+   ?Array.from(scroll.querySelectorAll('[class~="bg-gradient-to-t"][class~="from-surface"]')).filter(e=>{
+    const parent=e.parentElement,style=parent&&getComputedStyle(parent),b=e.getBoundingClientRect(),f=footer.getBoundingClientRect();
+    return !!parent&&scroll.contains(parent)&&!footer.contains(parent)&&parent.classList.contains('sticky')&&parent.classList.contains('bottom-0')&&parent.classList.contains('pointer-events-none')&&parent.getAttribute('aria-hidden')==='true'&&parent.children.length===1&&parent.firstElementChild===e&&style.position==='sticky'&&style.pointerEvents==='none'&&style.backgroundImage==='none'&&['rgba(0, 0, 0, 0)','transparent'].includes(style.backgroundColor)&&e.classList.contains('h-8')&&b.width>0&&Math.abs(b.bottom-f.top)<1&&b.left>=f.left-1&&b.right<=f.right+1&&activeEdge(e,parent);
+   }):[];
+  const bottomCandidates=[...new Set([...footerBottomCandidates,...stickyBottomCandidates])];
+  const fillCandidates=edgeStructure.ok&&edgeStructure.page==='conversation'&&edgeStructure.mode==='standard'&&footer
+   ?Array.from(footer.children).filter(e=>{
+    if(!e.matches('[class~="pointer-events-none"][class~="absolute"][class~="inset-x-0"][class~="mt-8"][class~="bg-surface"]')||!activeEdge(e)||getComputedStyle(e).position!=='absolute')return false;
+    const b=e.getBoundingClientRect(),f=footer.getBoundingClientRect();return Math.abs(b.left-f.left)<1&&Math.abs(b.right-f.right)<1&&Math.abs(b.top-f.top)<1&&Math.abs(b.bottom-f.bottom)<1;
+   }):[];
+  for(const [slot,candidates] of [['conversation.edge.top',topCandidates],['conversation.edge.bottom',bottomCandidates],['conversation.edge.fill',fillCandidates]]){
    const target=candidates.length===1?candidates[0]:null;
    for(const old of document.querySelectorAll('[data-ct-slot="'+slot+'"]'))if(old!==target)old.removeAttribute('data-ct-slot');
    if(target)markSlot([target],slot,slots);
   }`);
-  const edgeSelector='[class*="_MainContentTopFade_"], [class*="_background_"][class~="top-0"][class~="pointer-events-none"], [class~="bg-gradient-to-t"][class~="from-surface"]';
+  const edgeSelector='[data-ct-slot^="conversation.edge."], [class*="_MainContentTopFade_"], [class*="_background_"][class~="top-0"][class~="pointer-events-none"], [class~="bg-gradient-to-t"][class~="from-surface"], [class~="sticky"][class~="bottom-0"], [class~="mt-8"][class~="bg-surface"]';
   replace(/const structuralSelectors = \[/,`const structuralSelectors = [${JSON.stringify(edgeSelector)},`);
   replace(/if \(mutation.type === 'attributes'\) \{/,`if (mutation.type === 'attributes') {
+   if(['class','style'].includes(mutation.attributeName)){
+    if(target?.matches(${JSON.stringify(edgeSelector)})||target?.querySelector(${JSON.stringify(edgeSelector)}))needsApply=true;
+    continue;
+   }
    if(['aria-hidden','hidden','inert'].includes(mutation.attributeName)||target?.matches(${JSON.stringify(edgeSelector)})||target?.querySelector(${JSON.stringify(edgeSelector)})){needsApply=true;continue;}`);
   replace(/const editor = editors\.find\(isVisible\) \?\? editors\[0\] \?\? null;/,'const editor = resolvedStructure().nodes.editor;');
   replace(/const appMain = appMainCandidates\.find\(isVisible\) \?\? appMainCandidates\[0\] \?\? null;/,'const appMain = resolvedStructure().nodes.main;');
@@ -226,7 +242,7 @@ export async function buildTheme(name,sessionId,adapter=getAdapter('local-experi
  const observeStart=expression.indexOf('const observeOptions = {');
  const attributeStart=expression.indexOf('attributeFilter: [',observeStart);
  if(observeStart<0||attributeStart<observeStart)throw Error('Pinned observer options changed');
- expression=expression.slice(0,attributeStart)+expression.slice(attributeStart).replace('attributeFilter: [',"attributeFilter: ['hidden','inert','aria-hidden',");
+ expression=expression.slice(0,attributeStart)+expression.slice(attributeStart).replace('attributeFilter: [',"attributeFilter: ['hidden','inert','aria-hidden','class','style',");
  for(const call of ['mountHero(appMain, editor, slots);','mountHero(appMain, editor, homeSlots);']){
   if(!expression.includes(call))throw Error('Pinned copy mount changed');expression=expression.replace(call,call+'syncOwnedCopyDirection();');
  }
