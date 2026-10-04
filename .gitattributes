@@ -1,4 +1,6 @@
 * text=auto
+# Resource manifests verify exact bytes; preserve them in every checkout/archive.
+assets/dragon-v1/** -text
 *.png binary
 *.webp binary
 *.ico binary
