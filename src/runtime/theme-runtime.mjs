@@ -110,6 +110,11 @@ export async function buildTheme(name,sessionId,adapter=getAdapter('local-experi
   scopedInputContrast=scope(scopedInputContrast,':root[data-ct-theme*=".astra."][data-ct-color-scheme="dark"]');
  }
  vars.platform_css=JSON.stringify(JSON.parse(vars.platform_css)+'\n'+scopedInputContrast+'\n'+semanticPalette);
+ if(adapter.surfaceContract==='active-v1'){
+  // A growing native composer child can fill its flex region and place the
+  // input at the mount's top. Keep the confirmed region content-sized below it.
+  vars.platform_css=JSON.stringify(JSON.parse(vars.platform_css)+`\n:root[data-ct-theme="${manifest.id}"][data-ct-view="home-compact"] [data-ct-slot="composer.region"]{flex:0 0 auto!important;height:auto!important;margin-top:auto!important;}`);
+ }
  if(name.startsWith('astra-')){
   const avatar=await readFile(resolve(root,'avatar.webp'));
   if(avatar.length>256*1024)throw Error('Avatar size limit');
@@ -222,6 +227,24 @@ export async function buildTheme(name,sessionId,adapter=getAdapter('local-experi
   const conversations=/const conversation = \[\.\.\.document\.querySelectorAll\(\s*adapter\.selectors\.conversation\s*\)\]\.find\(isVisible\);/g;
   replace(conversations,'const conversation = resolvedStructure().nodes.messageRegion;');
   replace(/const composerRoot = editor\.closest\(adapter\.selectors\.composerRoot\);/g,'const composerRoot = resolvedStructure().nodes.composerRoot;');
+  // The native home layout is the confirmed flex page root. Its display:contents
+  // child only groups DOM siblings and must never become a themed layout box.
+  replace(/let homeLayout = homeSource;[\s\S]*?if \(!composerRoot \|\| homeLayout === main\) homeLayout = null;/,`const homeStructure=resolvedStructure();
+            const homeLayout=homeStructure.ok&&homeStructure.page==='home'&&homeStructure.nodes.main===main&&homeStructure.nodes.editor===editor&&homeStructure.nodes.composerRoot===composerRoot&&homeStructure.nodes.pageRoot!==document.body&&homeStructure.nodes.pageRoot!==document.documentElement&&getComputedStyle(homeStructure.nodes.pageRoot).display!=='contents'?homeStructure.nodes.pageRoot:null;`);
+  replace(/const directLayoutBranch = descendant => \{[\s\S]*?return branch\?\.parentElement === homeLayout \? branch : null;\s*\};/,`const directLayoutBranch = descendant => {
+              if (!homeLayout?.contains(descendant) || descendant === homeLayout) return null;
+              const path=[];
+              for(let node=descendant;node&&node!==homeLayout;node=node.parentElement)path.unshift(node);
+              if(path[0]?.parentElement!==homeLayout)return null;
+              let index=0;
+              while(index<path.length-1&&getComputedStyle(path[index]).display==='contents'){
+                const wrapper=path[index];
+                if(wrapper.hidden||wrapper.hasAttribute('inert')||wrapper.getAttribute('aria-hidden')==='true')return null;
+                index++;
+              }
+              return path[index]??null;
+            };`);
+  replace(/&& Boolean\(homeSource\?\.isConnected && homeLayout && homeBranch && composerRegion\);/,`&& Boolean(homeSource?.isConnected && homeLayout && homeBranch && composerRegion && homeBranch!==composerRegion && homeBranch.parentElement===composerRegion.parentElement);`);
   replace(/const isConversationTarget = target\.matches\(adapter\.selectors\.conversation\);/,'const isConversationTarget = resolvedStructure().nodes.messageRegion === target;');
   replace(/const viewport = isConversationTarget \? target\.parentElement : null;/,'const viewport = isConversationTarget ? resolvedStructure().nodes.characterMount : null;');
   replace(/const stage = viewport\?\.parentElement;/,'const stage = isConversationTarget ? resolvedStructure().nodes.pageRoot : null;');
