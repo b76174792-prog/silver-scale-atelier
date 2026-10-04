@@ -84,6 +84,7 @@ export async function buildTheme(name,sessionId,adapter=getAdapter('local-experi
  :root[data-ct-theme="${manifest.id}"][data-ct-color-scheme="light"]${adapter.surfaceContract==='active-v1'?' [data-ct-slot]':''} {color-scheme:light;}
  ${adapter.surfaceContract==='active-v1'?`${paletteScope} .sidebar-navigation {background:var(--ss-sidebar)!important;color:var(--ss-text)!important;}`:''}
  ${adapter.surfaceContract==='active-v1'?`${paletteScope} [data-ct-slot="conversation"] [data-markdown-text-style="assistant-message"] {color:var(--ss-text)!important;}`:''}
+ ${adapter.surfaceContract==='active-v1'?`${paletteScope} :is([data-ct-slot="conversation.edge.top"],[data-ct-slot="conversation.edge.bottom"]) {--color-surface:var(--ss-surface)!important;}`:''}
  :root[data-ct-theme="${manifest.id}"] [data-chatgpt-agent-turn-start] {color:var(--ss-muted)!important;}
  :root[data-ct-theme="${manifest.id}"] [data-app-action-timeline-scroll] a {color:var(--ss-accent)!important;}
  :root[data-ct-theme="${manifest.id}"] [data-composer-markdown] .placeholder::before {color:var(--ss-muted)!important;}
@@ -145,6 +146,33 @@ export async function buildTheme(name,sessionId,adapter=getAdapter('local-experi
  const apply = () => {if(!activePageAllowsWrites())return null;`);
  if(adapter.surfaceContract==='active-v1'){
   const replace=(pattern,value)=>{if(!pattern.test(expression))throw Error('Pinned active-surface bridge changed');expression=expression.replace(pattern,value);};
+  // Native edge fades sit beside the page or composer, outside their palette slots.
+  // Bind only unique visible edges related to the confirmed page; never theme body probes.
+  replace(/const slots = \['app.shell', `adapter:\$\{adapter.id\}`\];/,`const slots = ['app.shell', \`adapter:\${adapter.id}\`];
+  const edgeStructure=resolvedStructure(),edgeNodes=edgeStructure.nodes;
+  const activeEdge=node=>{
+   if(!node||!root.contains(node))return false;
+   const box=node.getBoundingClientRect();if(!(box.width>0&&box.height>0))return false;
+   for(let e=node,depth=0;e&&depth<48;e=e.parentElement,depth++){
+    const style=getComputedStyle(e);
+    if(e.hasAttribute('hidden')||e.hasAttribute('inert')||e.getAttribute('aria-hidden')==='true'||style.display==='none'||['hidden','collapse'].includes(style.visibility)||Number(style.opacity)===0)return false;
+    if(e===root)return true;
+   }
+   return false;
+  };
+  const frame=edgeNodes.pageRoot?.closest('[class*="_MainContentFrame_"]');
+  const topCandidates=edgeStructure.ok&&edgeStructure.page==='conversation'&&frame&&edgeNodes.shell.contains(frame)
+   ?Array.from(frame.querySelectorAll('[class*="_MainContentTopFade_"]')).filter(e=>e.closest('[class*="_MainContentFrame_"]')===frame&&e.parentElement.contains(edgeNodes.pageRoot)&&activeEdge(e)):[];
+  const bottomCandidates=edgeStructure.ok&&edgeStructure.page==='conversation'&&edgeNodes.footer
+   ?Array.from(edgeNodes.footer.querySelectorAll('[class~="bg-gradient-to-t"][class~="from-surface"]')).filter(activeEdge):[];
+  for(const [slot,candidates] of [['conversation.edge.top',topCandidates],['conversation.edge.bottom',bottomCandidates]]){
+   const target=candidates.length===1?candidates[0]:null;
+   for(const old of document.querySelectorAll('[data-ct-slot="'+slot+'"]'))if(old!==target)old.removeAttribute('data-ct-slot');
+   if(target)markSlot([target],slot,slots);
+  }`);
+  replace(/const structuralSelectors = \[/,`const structuralSelectors = ['[class*="_MainContentTopFade_"], [class~="bg-gradient-to-t"][class~="from-surface"]',`);
+  replace(/if \(mutation.type === 'attributes'\) \{/,`if (mutation.type === 'attributes') {
+   if(target?.matches('[class*="_MainContentTopFade_"], [class~="bg-gradient-to-t"][class~="from-surface"]')){needsApply=true;continue;}`);
   replace(/const editor = editors\.find\(isVisible\) \?\? editors\[0\] \?\? null;/,'const editor = resolvedStructure().nodes.editor;');
   replace(/const appMain = appMainCandidates\.find\(isVisible\) \?\? appMainCandidates\[0\] \?\? null;/,'const appMain = resolvedStructure().nodes.main;');
   replace(/const visibleConversation = \[\.\.\.document\.querySelectorAll\(\s*adapter\.selectors\.conversation\s*\)\]\.find\(isVisible\);/,'const visibleConversation = resolvedStructure().nodes.messageRegion;');

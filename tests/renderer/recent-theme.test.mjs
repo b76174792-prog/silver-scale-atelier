@@ -22,6 +22,34 @@ const theme=await buildTheme('astra-night',session,adapter);
 const install=await getInstallExpression({adapter,ownerSessionId:session+1,hostInstanceId:'recent-theme-fixture',deadlineAt:Date.now()+120000});
 const snapshot=page=>page.production(`(()=>{const r=window.__codexThemeRuntime,c=window.__silverScaleController,k=document.getElementById('silver-scale-character'),s=c?.activeStructure?.(),footer=s?.nodes.footer?.getBoundingClientRect();return {runtime:!!r,theme:document.documentElement.dataset.ctTheme||null,slots:r?.slots?.length??null,page:c?.activePage?.()??null,mode:s?.mode??null,controller:!!c,figureCount:document.querySelectorAll('#silver-scale-character').length,figureBottom:k?.getBoundingClientRect().bottom??null,footerTop:footer?.top??null,stageSlot:s?.nodes.pageRoot?.getAttribute('data-ct-slot')??null,viewportSlot:s?.nodes.characterMount?.getAttribute('data-ct-slot')??null,viewportBackground:s?.nodes.characterMount?getComputedStyle(s.nodes.characterMount).backgroundColor:null,viewportIsolation:s?.nodes.characterMount?getComputedStyle(s.nodes.characterMount).isolation:null};})()`);
 
+for(const [name,html] of [['ordinary',ordinary],['dot',dot]])test(`active ${name} native edge fades follow the night surface and restore`,async()=>{
+ const nativeStyle='<style>:root{--color-surface:white;--app-color-background-surface:white}.native-edge{background-image:linear-gradient(var(--color-surface),transparent)}.native-bottom{background-image:linear-gradient(to top,var(--color-surface),transparent)}</style>';
+ const top='<div id="active-top-fade" class="_MainContentTopFade_fixture _background_fixture native-edge" style="position:absolute;top:0;width:850px;height:40px"></div>';
+ const bottom='<div id="active-bottom-fade" class="pointer-events-none absolute bg-gradient-to-t from-surface native-bottom" style="width:800px;height:32px"></div>';
+ let fixture=html.replace('<body>',nativeStyle+'<body>');
+ const pageStart=name==='dot'?'<main class="messaging-root':'<div data-request-input-activity-root';
+ fixture=fixture.replace(pageStart,`<div class="_MainContentFrame_fixture" style="position:relative;width:900px;height:700px"><div style="position:relative;width:900px;height:700px">${top}${pageStart}`)
+  .replace('</section>','</div></div><div id="outside-top-fade" class="_MainContentTopFade_fixture native-edge" style="width:850px;height:40px"></div></section>');
+ const footerStart=name==='dot'?'<div class="conversation-footer" style="height:80px;width:800px">':'<div data-thread-scroll-footer style="width:800px;height:90px">';
+ fixture=fixture.replace(footerStart,footerStart+bottom);
+ await withRendererFixture({browserPath:process.env.SILVER_SCALE_TEST_BROWSER,html:fixture},async page=>{
+  const read=()=>page.evaluate(`(()=>{const bg=id=>getComputedStyle(document.getElementById(id)).backgroundImage;return {top:bg('active-top-fade'),bottom:bg('active-bottom-fade'),outside:bg('outside-top-fade'),body:getComputedStyle(document.body).getPropertyValue('--app-color-background-surface'),slots:document.querySelectorAll('[data-ct-slot^="conversation.edge."]').length};})()`);
+  const before=await read();await page.production(install);await page.production(theme.expression);await page.production(updateExpression(true,false,{theme:'astra-night'}));
+  const on=await read();assert.notEqual(on.top,before.top,'top white fade changes');assert.notEqual(on.bottom,before.bottom,'bottom white fade changes');
+  assert.ok(on.top.includes('32, 35, 49'),on.top);assert.ok(on.bottom.includes('32, 35, 49'),on.bottom);assert.equal(on.outside,before.outside);assert.equal(on.body,before.body);assert.equal(on.slots,2);
+  await page.production(theme.expression);assert.equal((await read()).slots,2,'repeat apply keeps exactly two edge targets');
+  await page.evaluate(`for(const id of ['active-top-fade','active-bottom-fade']){const e=document.getElementById(id),copy=e.cloneNode(true);copy.id=id+'-ambiguous';copy.removeAttribute('data-ct-slot');e.parentElement.appendChild(copy);}`);
+  await page.evaluate('new Promise(r=>setTimeout(r,350))');
+  const ambiguous=await read();assert.equal(ambiguous.slots,0,'ambiguous edge candidates stay native');assert.equal(ambiguous.top,before.top);assert.equal(ambiguous.bottom,before.bottom);
+  await page.evaluate(`document.getElementById('active-top-fade-ambiguous').setAttribute('aria-hidden','true');document.getElementById('active-bottom-fade-ambiguous').setAttribute('inert','');`);
+  await page.evaluate('new Promise(r=>setTimeout(r,350))');assert.deepEqual(await read(),on,'inactive cached edges do not block the unique active edges');
+  const hidden=await page.evaluate(`['active-top-fade-ambiguous','active-bottom-fade-ambiguous'].map(id=>getComputedStyle(document.getElementById(id)).backgroundImage)`);assert.deepEqual(hidden,[before.top,before.bottom],'inactive copies keep their native gradients');
+  await page.evaluate(`document.getElementById('active-top-fade-ambiguous').remove();document.getElementById('active-bottom-fade-ambiguous').remove();`);
+  await page.production(restoreExpression(session));await page.production(updateExpression(false));await page.production(removeControllerExpression(session+1));
+  assert.deepEqual(await read(),before,'Off restores exact native fades and removes edge marks');
+ });
+});
+
 test('dot generation ignores inactive owner/status ancestors and resumes after activity restoration',async()=>withRendererFixture({browserPath:process.env.SILVER_SCALE_TEST_BROWSER,html:dot.replace(dotRoot,`<div id="profile-ancestor"><div class="group/orbit-profile"><div id="status-ancestor"><span role="status" style="display:contents"><span>Synthetic generation</span></span></div></div></div>${dotRoot}`)},async page=>{
  await page.evaluate("document.getElementById('profile-ancestor').setAttribute('aria-hidden','true')");
  await page.production(install);await page.production(theme.expression);await page.production(updateExpression(true,false,{theme:'astra-night'}));
