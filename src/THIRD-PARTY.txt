@@ -1,0 +1,15 @@
+银鳞书庭 · 第三方组件与署名索引
+
+ReTheme — https://github.com/duxweb/ReTheme — BSD-3-Clause。
+含修订页面运行时、精确版本适配和固定主题校验器；许可见 licenses/LICENSE-ReTheme.txt 与 upstream/LICENSE-ReTheme.txt，来源与哈希见 dependencies.lock.json。
+
+Node.js 24.21.0 — 随包 node.exe；完整许可见 licenses/LICENSE-Node.txt。
+官方 ZIP SHA-256：158f7685b44de51f6c0df1d153526cbcd3e1bc739a8dfc607721cef75de9e541。
+
+Inno Setup 6.7.3 — 构建安装/卸载程序；许可见 licenses/LICENSE-Inno.txt。
+Microsoft .NET Framework / Windows 组件使用系统运行库；字体使用系统字体。
+
+Astra 原角色及原始形象素材 — ZipZipPipe，https://space.bilibili.com/4168597/ 。
+主题实现与项目内衍生整理 — 项目维护者（AI 辅助）。逐文件来源及哈希见 resources/dragon-v1/asset-manifest.json，证据摘要见 PROVENANCE.md。
+
+面向用户的素材授权范围、权限与签名说明统一见《用户须知.txt》。

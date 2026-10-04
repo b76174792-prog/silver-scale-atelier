@@ -1,0 +1,104 @@
+/* Private Astra adaptation. Decorations are backgrounds/pseudo-elements, never controls. */
+:root[data-ct-theme*=".astra."] [data-composer-surface-variant] {backdrop-filter:none!important;-webkit-backdrop-filter:none!important;}
+:root[data-ct-theme*=".astra."] :is([data-ct-slot="conversation.viewport"],[class~="group/thread-scroll-layout"]:has(> [data-app-action-timeline-scroll])) {
+ background:var(--ss-surface)!important;isolation:isolate;
+}
+:root[data-ct-theme*=".astra."] :is([data-ct-slot="conversation.viewport"],[class~="group/thread-scroll-layout"]:has(> [data-app-action-timeline-scroll]))::before {
+ content:""!important;display:block!important;position:absolute!important;inset:0!important;
+ width:auto!important;z-index:-2!important;pointer-events:none!important;
+ background:var(--ss-character) no-repeat right -40px top 0 / auto 112%!important;
+ opacity:.49!important;
+ mask-image:linear-gradient(to bottom,transparent 0%,#000 8%,#000 72%,transparent 100%)!important;
+ filter:drop-shadow(0 0 12px #c9bdff70) drop-shadow(0 0 30px #9298e433)!important;
+}
+:root[data-ct-theme*=".astra."] [data-app-action-timeline-scroll] {background:transparent!important;}
+:root[data-ct-theme*=".astra."] :is([data-ct-slot="conversation.viewport"],[class~="group/thread-scroll-layout"]:has(> [data-app-action-timeline-scroll]))::after {
+ content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;
+ background:linear-gradient(90deg,var(--ss-surface) 0%,color-mix(in srgb,var(--ss-surface) 52%,transparent) 35%,color-mix(in srgb,var(--ss-surface) 22%,transparent) 70%,transparent 100%);
+}
+:root[data-ct-theme*=".astra."][data-ct-color-scheme="light"] :is([data-ct-slot="conversation.viewport"],[class~="group/thread-scroll-layout"]:has(> [data-app-action-timeline-scroll]))::before {
+ opacity:.45!important;filter:none!important;
+}
+@media(max-width:1100px) {
+ :root[data-ct-theme*=".astra."] :is([data-ct-slot="conversation.viewport"],[class~="group/thread-scroll-layout"]:has(> [data-app-action-timeline-scroll]))::before {
+  background-size:auto 108%!important;background-position:65% top!important;
+ }
+}
+:root[data-ct-theme*=".astra."] [data-app-action-timeline-scroll] :is(pre,[data-ct-slot="code.block"],blockquote) {
+ background:color-mix(in srgb,var(--ss-surface) 60%,transparent)!important;
+ border:1px solid color-mix(in srgb,var(--ss-control) 45%,transparent)!important;
+ border-radius:12px!important;box-shadow:none!important;
+ backdrop-filter:none!important;-webkit-backdrop-filter:none!important;color:var(--ss-text)!important;
+}
+:root[data-ct-theme*=".astra."] [data-app-action-timeline-scroll] :is([data-ct-slot="code.header"],[data-ct-slot="code.toolbar"]) {
+ background:color-mix(in srgb,var(--ss-selected) 75%,transparent)!important;color:var(--ss-text)!important;
+}
+/* Native Chat code surfaces own a nested light palette: pair their toolbar with the theme. */
+:root[data-ct-theme*=".astra."] [data-markdown-copy="code-block"] {
+ background:color-mix(in srgb,var(--ss-surface) 48%,transparent)!important;
+ border-color:color-mix(in srgb,var(--ss-control) 45%,transparent)!important;color:var(--ss-text)!important;
+}
+:root[data-ct-theme*=".astra."] [data-markdown-copy="code-block"] > [data-markdown-copy="exclude"] {
+ background:color-mix(in srgb,var(--ss-selected) 75%,transparent)!important;color:var(--ss-text)!important;
+}
+:root[data-ct-theme*=".astra."] [data-markdown-copy="code-block"] > [data-markdown-copy="exclude"] button {color:var(--ss-text)!important;}
+:root[data-ct-theme*=".astra."] [data-markdown-copy="code-block"] pre {background:transparent!important;backdrop-filter:none!important;border:0!important;}
+:root[data-ct-theme*=".astra."] [data-app-action-timeline-scroll] table {
+ background:color-mix(in srgb,var(--ss-surface) 50%,transparent)!important;
+}
+:root[data-ct-theme*=".astra."] [data-app-action-timeline-scroll] th {background:color-mix(in srgb,var(--ss-selected) 65%,transparent)!important;}
+:root[data-ct-theme*=".astra."] [data-app-action-timeline-scroll] blockquote {border-inline-start:2px solid var(--ss-accent)!important;}
+/* A single silver/gold motif repeated at different densities. No animated glitter. */
+:root[data-ct-theme*=".astra."] [data-ct-slot="sidebar.section.header"] {
+ border-bottom:1px solid color-mix(in srgb,var(--ss-control) 30%,transparent);
+ background:linear-gradient(90deg,color-mix(in srgb,var(--ss-accent) 10%,transparent),transparent 70%);
+}
+:root[data-ct-theme*=".astra."] [data-ct-slot="sidebar.footer.brand"] {
+ padding-inline-start:31px!important;background:var(--ss-avatar) no-repeat left center / 27px 27px;
+}
+:root[data-ct-theme*=".astra."] [data-ct-slot="sidebar.footer.brand"]::after {
+ content:"";position:absolute;inset-inline-end:45px;top:11px;width:9px;height:9px;
+ border:1px solid var(--ss-accent);border-radius:50%;box-shadow:4px 0 0 -1px var(--ss-sidebar);pointer-events:none;
+}
+:root[data-ct-theme*=".astra."] [data-ct-slot="home.hero"] {border:1px solid color-mix(in srgb,var(--ss-accent) 28%,transparent)!important;}
+:root[data-ct-theme*=".astra."] [data-ct-slot="home.hero.copy"] {background:linear-gradient(90deg,color-mix(in srgb,var(--ss-surface) 72%,transparent),transparent)!important;border-inline-start:2px solid var(--ss-accent)!important;}
+:root[data-ct-theme*=".astra."] [class~="group/settings"] {
+ background-image:radial-gradient(ellipse at 93% 10%,color-mix(in srgb,var(--ss-accent) 7%,transparent),transparent 45%)!important;
+}
+:root[data-ct-theme*=".astra."] [class~="group/settings"] header:has(h1) {
+ border-bottom:1px solid color-mix(in srgb,var(--ss-accent) 30%,transparent);padding-bottom:16px;padding-inline-end:52px;
+ background:var(--ss-avatar) no-repeat right center / 38px 38px;
+}
+:root[data-ct-theme*=".astra."] :is([role="dialog"],[role="menu"],[role="listbox"]) {
+ border-color:color-mix(in srgb,var(--ss-accent) 42%,var(--ss-control))!important;
+}
+@media(prefers-reduced-transparency:reduce){
+ :root[data-ct-theme*=".astra."] [data-app-action-timeline-scroll] :is(pre,blockquote,table){background:var(--ss-surface)!important;backdrop-filter:none;}
+}
+/* Focus mode keeps its existing quiet, illustration-free reading space. */
+:root[data-ct-theme*=".astra."] :has(> #silver-scale-home-environment) > [class~="group/home-composer-layout"] {position:relative;z-index:1;}
+:root[data-ct-theme*=".astra."] #silver-scale-home-environment {position:absolute;inset:0;z-index:0;pointer-events:none;overflow:hidden;opacity:.48;mask-image:linear-gradient(90deg,transparent,#000 3%,#000 28%,transparent 66%),linear-gradient(180deg,transparent,#000 5%,#000 92%,transparent);mask-composite:intersect;}
+:root[data-ct-theme*=".astra."] #silver-scale-home-environment img {position:absolute;inset-inline-start:0;top:0;width:min(560px,66%);height:100%;object-fit:contain;object-position:left center;pointer-events:none;}
+:root[data-ct-theme*=".astra."] #silver-scale-home-environment img[data-layer="l2"] {inset-inline-start:110px;top:auto;bottom:24px;width:min(380px,50%);height:auto;}
+:root[data-ct-theme*=".astra."] #silver-scale-home-environment img[data-layer="l3"] {top:auto;bottom:38px;width:min(330px,45%);height:auto;object-position:left bottom;}
+:root[data-ct-theme*=".astra."] #silver-scale-home-environment img[hidden] {display:none!important;}
+:root[data-ct-theme*=".astra."][data-ct-color-scheme="light"] #silver-scale-home-environment {opacity:.62;filter:brightness(.86) saturate(.8);}
+/* One fixed scenery plane inside the existing conversation viewport. It never participates in text layout. */
+:root[data-ct-theme*=".astra."] #silver-scale-home-environment[data-surface="conversation"] {z-index:-2;opacity:.55;mask-image:linear-gradient(90deg,transparent,#000 4%,#000 25%,transparent 59%),linear-gradient(180deg,transparent,#000 7%,#000 89%,transparent);}
+:root[data-ct-theme*=".astra."][data-ct-color-scheme="light"] #silver-scale-home-environment[data-surface="conversation"] {opacity:.65;}
+@media(max-width:850px){:root[data-ct-theme*=".astra."] #silver-scale-home-environment {opacity:.32;}:root[data-ct-theme*=".astra."] #silver-scale-home-environment img {max-width:85%;}:root[data-ct-theme*=".astra."] #silver-scale-home-environment img[data-layer="l2"] {inset-inline-start:60px;}}
+:root[data-ct-theme$=".astra.focus"] :is([data-ct-slot="conversation.viewport"],[class~="group/thread-scroll-layout"]:has(> [data-app-action-timeline-scroll]))::before,
+:root[data-ct-theme$=".astra.focus"] :is([data-ct-slot="conversation.viewport"],[class~="group/thread-scroll-layout"]:has(> [data-app-action-timeline-scroll]))::after {display:none!important;}
+:root[data-ct-theme$=".astra.focus"] [data-thread-user-message-navigation-content] {width:100%!important;max-width:var(--thread-body-max-width)!important;margin-inline:auto!important;}
+
+
+/* Decoration direction is sampled from its native parent, independently of menu locale. */
+#silver-scale-home-environment[data-ss-host-dir="rtl"]{direction:rtl;}
+#silver-scale-home-environment[data-ss-host-dir="ltr"]{direction:ltr;}
+:root[data-ct-theme*=".astra."] #silver-scale-home-environment[data-ss-host-dir="rtl"]{mask-image:linear-gradient(270deg,transparent,#000 3%,#000 28%,transparent 66%),linear-gradient(180deg,transparent,#000 5%,#000 92%,transparent);}
+:root[data-ct-theme*=".astra."] #silver-scale-home-environment[data-surface="conversation"][data-ss-host-dir="rtl"]{mask-image:linear-gradient(270deg,transparent,#000 4%,#000 25%,transparent 59%),linear-gradient(180deg,transparent,#000 7%,#000 89%,transparent);}
+:root[data-ct-theme*=".astra."] #silver-scale-home-environment[data-ss-host-dir="rtl"] img{object-position:right center;}
+:root[data-ct-theme*=".astra."] #silver-scale-home-environment[data-ss-host-dir="rtl"] img[data-layer="l3"]{object-position:right bottom;}
+:root[data-ct-theme*=".astra."] :is([data-ct-slot="conversation.viewport"],[class~="group/thread-scroll-layout"]):has(> #silver-scale-character[data-ss-host-dir="rtl"])::after{background:linear-gradient(270deg,var(--ss-surface) 0%,color-mix(in srgb,var(--ss-surface) 52%,transparent) 35%,color-mix(in srgb,var(--ss-surface) 22%,transparent) 70%,transparent 100%);}
+:root[data-ct-theme*=".astra."] [data-ct-slot="sidebar.footer.brand"]:dir(rtl){background-position:right center;}
+:root[data-ct-theme*=".astra."] [class~="group/settings"] header:has(h1):dir(rtl){background-position:left center;}

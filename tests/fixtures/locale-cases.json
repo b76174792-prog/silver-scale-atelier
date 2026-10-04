@@ -1,0 +1,14 @@
+[
+  {"choice":"auto","system":"es-MX","expected":"es"},
+  {"choice":"auto","system":"ar_EG","expected":"ar"},
+  {"choice":"auto","system":"de-DE","expected":"en"},
+  {"choice":"auto","system":"zh-TW","expected":"zh-CN"},
+  {"choice":"auto","system":"ZH_hant_HK","expected":"zh-CN"},
+  {"choice":"auto","system":"EN_us","expected":"en"},
+  {"choice":"auto","system":"fr-CA","expected":"fr"},
+  {"choice":"auto","system":"ru-RU","expected":"ru"},
+  {"choice":"ar","system":"en-US","expected":"ar"},
+  {"choice":"en","system":"zh-CN","expected":"en"},
+  {"choice":"auto","system":"../../secret","expected":"en"},
+  {"choice":"auto","system":null,"expected":"en"}
+]

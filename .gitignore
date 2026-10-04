@@ -1,0 +1,8 @@
+stage/
+dist/
+src/bin/
+src/resources/
+package-manifest.json
+Preflight.ps1
+work/
+.superpowers/

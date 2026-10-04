@@ -1,0 +1,188 @@
+{
+  "schemaVersion": 1,
+  "characterId": "local.astra.original",
+  "files": [
+    {
+      "file": "avatar.webp",
+      "size": 49856,
+      "sha256": "2f2db8fb7155b111a426b98ec4132e3ecd7691ee6ccbf1c07c19e5cc7ec92a89",
+      "source": "dragon-ui-studio/variants/astra/assets/final/avatar.webp",
+      "distributionRef": "zipzippipe-authorization-20261004-noncommercial-project"
+    },
+    {
+      "file": "environment/l1-v3.png",
+      "size": 1992483,
+      "sha256": "1245cbf0adbbef99108053aacf7967f1557711ea7faaacf810c6a1c306bcd99b",
+      "source": "local-runtime/resources/67d4d1f5dff91894a73aed5281526466f38d9c96a4c50f96b422a715b3d4b62f/environment/l1-v3.png",
+      "distributionRef": "zipzippipe-authorization-20261004-noncommercial-project"
+    },
+    {
+      "file": "environment/l2-v3.png",
+      "size": 1929790,
+      "sha256": "6d0ac0128c1e988c28ae947d282d491309529106921aa49a38fdbf9af370380e",
+      "source": "local-runtime/resources/67d4d1f5dff91894a73aed5281526466f38d9c96a4c50f96b422a715b3d4b62f/environment/l2-v3.png",
+      "distributionRef": "zipzippipe-authorization-20261004-noncommercial-project"
+    },
+    {
+      "file": "environment/l3-v3.png",
+      "size": 1570511,
+      "sha256": "efc77e6198ba53fcf2d993a87e83421516e179640d61ba4f3dc6739056d6953d",
+      "source": "local-runtime/resources/67d4d1f5dff91894a73aed5281526466f38d9c96a4c50f96b422a715b3d4b62f/environment/l3-v3.png",
+      "distributionRef": "zipzippipe-authorization-20261004-noncommercial-project"
+    },
+    {
+      "file": "pack.json",
+      "size": 167,
+      "sha256": "79fae210a68101b807d63e8656c666fc40d5056aa5a746ca8b183240fe2978be",
+      "source": "local-runtime/resources/67d4d1f5dff91894a73aed5281526466f38d9c96a4c50f96b422a715b3d4b62f/pack.json",
+      "distributionRef": "zipzippipe-authorization-20261004-noncommercial-project"
+    },
+    {
+      "file": "themes/astra-day/assets/banner-day.webp",
+      "size": 130890,
+      "sha256": "125cbecb75cdb09b118c3d82133f50adbd60ec841729d167a3bd282fd810fa97",
+      "source": "dragon-ui-studio/variants/astra/theme/silver-scale-astra-day/assets/banner-day.webp",
+      "distributionRef": "zipzippipe-authorization-20261004-noncommercial-project"
+    },
+    {
+      "file": "themes/astra-day/assets/environment-day.webp",
+      "size": 274416,
+      "sha256": "667a65e27e501a435fe9c0d88eab665f589d915c11b78dc0f89d8825c895f7d2",
+      "source": "dragon-ui-studio/variants/astra/theme/silver-scale-astra-day/assets/environment-day.webp",
+      "distributionRef": "zipzippipe-authorization-20261004-noncommercial-project"
+    },
+    {
+      "file": "themes/astra-day/assets/home-foreground.webp",
+      "size": 380956,
+      "sha256": "464e7e23e7f5cf535851637d4aa8dba55fdf7345625f075571baafc5b1526412",
+      "source": "dragon-ui-studio/variants/astra/theme/silver-scale-astra-day/assets/home-foreground.webp",
+      "distributionRef": "zipzippipe-authorization-20261004-noncommercial-project"
+    },
+    {
+      "file": "themes/astra-day/assets/state-welcome.webp",
+      "size": 106044,
+      "sha256": "22743c05a631af8b4cd0aeb599fc38a082c6ee17eec91f469e1754ca0964e354",
+      "source": "dragon-ui-studio/variants/astra/theme/silver-scale-astra-day/assets/state-welcome.webp",
+      "distributionRef": "zipzippipe-authorization-20261004-noncommercial-project"
+    },
+    {
+      "file": "themes/astra-day/manifest.json",
+      "size": 4227,
+      "sha256": "d5c83c6590ea07fe0c34ebd12d6535d626f58787f4309ccac8f0b7b8ede4bfb8",
+      "source": "dragon-ui-studio/variants/astra/theme/silver-scale-astra-day/manifest.json",
+      "distributionRef": "zipzippipe-authorization-20261004-noncommercial-project"
+    },
+    {
+      "file": "themes/astra-day/styles/overrides.css",
+      "size": 13050,
+      "sha256": "49c3b6967ce508d14c627919ce18cf9c826c44c78ad9be54ea8a0f1632e4e368",
+      "source": "dragon-ui-studio/variants/astra/theme/silver-scale-astra-day/styles/overrides.css",
+      "distributionRef": "zipzippipe-authorization-20261004-noncommercial-project"
+    },
+    {
+      "file": "themes/astra-day/styles/tokens.css",
+      "size": 1247,
+      "sha256": "2ff92e7086d1c1ee5cb50d786dc64cf4d52abc41b6e5a2318d727bcc5d1b011d",
+      "source": "dragon-ui-studio/variants/astra/theme/silver-scale-astra-day/styles/tokens.css",
+      "distributionRef": "zipzippipe-authorization-20261004-noncommercial-project"
+    },
+    {
+      "file": "themes/astra-focus/assets/quiet.svg",
+      "size": 306,
+      "sha256": "ec5104bfcdc474c34da4c214ccdc9aeb6a3a7a7e8cb1050ba48a10eb4abd09c1",
+      "source": "dragon-ui-studio/variants/astra/theme/silver-scale-astra-focus/assets/quiet.svg",
+      "distributionRef": "zipzippipe-authorization-20261004-noncommercial-project"
+    },
+    {
+      "file": "themes/astra-focus/manifest.json",
+      "size": 3335,
+      "sha256": "d041f36daa8f8c92a583f35a80b2166e3fa045dcb9f6c4ed1e8fbe84c5bf9b7f",
+      "source": "dragon-ui-studio/variants/astra/theme/silver-scale-astra-focus/manifest.json",
+      "distributionRef": "zipzippipe-authorization-20261004-noncommercial-project"
+    },
+    {
+      "file": "themes/astra-focus/styles/overrides.css",
+      "size": 11868,
+      "sha256": "9f7c3575b1e4e422bfd1afca8b5f4054fd603336ff76d57b140b12ca516b2e07",
+      "source": "dragon-ui-studio/variants/astra/theme/silver-scale-astra-focus/styles/overrides.css",
+      "distributionRef": "zipzippipe-authorization-20261004-noncommercial-project"
+    },
+    {
+      "file": "themes/astra-focus/styles/tokens.css",
+      "size": 1253,
+      "sha256": "20fb351c2951482eaf1497bf9d349a55ade4558a5aee823d8dbe8d90013243b7",
+      "source": "dragon-ui-studio/variants/astra/theme/silver-scale-astra-focus/styles/tokens.css",
+      "distributionRef": "zipzippipe-authorization-20261004-noncommercial-project"
+    },
+    {
+      "file": "themes/astra-night/assets/banner-night.webp",
+      "size": 103442,
+      "sha256": "8a4d40f4f21c1dbccd63594d03b0a00e72f983a8c78690fe5643dec0ea48c876",
+      "source": "dragon-ui-studio/variants/astra/theme/silver-scale-astra-night/assets/banner-night.webp",
+      "distributionRef": "zipzippipe-authorization-20261004-noncommercial-project"
+    },
+    {
+      "file": "themes/astra-night/assets/character-complete.png",
+      "size": 1685223,
+      "sha256": "ba1c234c69afa3e6f4dfde8dd6052b1282017c81591c486df653eb2139fe1377",
+      "source": "local-runtime/resources/67d4d1f5dff91894a73aed5281526466f38d9c96a4c50f96b422a715b3d4b62f/themes/astra-night/assets/character-complete.png",
+      "distributionRef": "zipzippipe-authorization-20261004-noncommercial-project"
+    },
+    {
+      "file": "themes/astra-night/assets/character-responding.png",
+      "size": 1803794,
+      "sha256": "db3806ca892aa13dd0829b0e57a5d6096cadeec5e26743aa93458061580757cf",
+      "source": "local-runtime/resources/67d4d1f5dff91894a73aed5281526466f38d9c96a4c50f96b422a715b3d4b62f/themes/astra-night/assets/character-responding.png",
+      "distributionRef": "zipzippipe-authorization-20261004-noncommercial-project"
+    },
+    {
+      "file": "themes/astra-night/assets/character-thinking.png",
+      "size": 1687316,
+      "sha256": "2463478f82225a753bddf33c3f641d50159db81021212c431b08acb1ae44783b",
+      "source": "local-runtime/resources/67d4d1f5dff91894a73aed5281526466f38d9c96a4c50f96b422a715b3d4b62f/themes/astra-night/assets/character-thinking.png",
+      "distributionRef": "zipzippipe-authorization-20261004-noncommercial-project"
+    },
+    {
+      "file": "themes/astra-night/assets/environment-night.webp",
+      "size": 217270,
+      "sha256": "15479a0246afef931e7eaedc4e9a10e089982e66e5c712daa63af01d68c75b40",
+      "source": "dragon-ui-studio/variants/astra/theme/silver-scale-astra-night/assets/environment-night.webp",
+      "distributionRef": "zipzippipe-authorization-20261004-noncommercial-project"
+    },
+    {
+      "file": "themes/astra-night/assets/home-foreground.webp",
+      "size": 380956,
+      "sha256": "464e7e23e7f5cf535851637d4aa8dba55fdf7345625f075571baafc5b1526412",
+      "source": "dragon-ui-studio/variants/astra/theme/silver-scale-astra-night/assets/home-foreground.webp",
+      "distributionRef": "zipzippipe-authorization-20261004-noncommercial-project"
+    },
+    {
+      "file": "themes/astra-night/assets/state-welcome.webp",
+      "size": 106044,
+      "sha256": "22743c05a631af8b4cd0aeb599fc38a082c6ee17eec91f469e1754ca0964e354",
+      "source": "dragon-ui-studio/variants/astra/theme/silver-scale-astra-night/assets/state-welcome.webp",
+      "distributionRef": "zipzippipe-authorization-20261004-noncommercial-project"
+    },
+    {
+      "file": "themes/astra-night/manifest.json",
+      "size": 4235,
+      "sha256": "e8d95c4a378a64dfa9f0a79df8452b5fbb1e95df533ce8e1a28e46051b9d6565",
+      "source": "dragon-ui-studio/variants/astra/theme/silver-scale-astra-night/manifest.json",
+      "distributionRef": "zipzippipe-authorization-20261004-noncommercial-project"
+    },
+    {
+      "file": "themes/astra-night/styles/overrides.css",
+      "size": 13254,
+      "sha256": "e546064387e3bb7b2dec8a1ebbcc0d2e61f5635903ae71cab78d1bbe3e37b8f9",
+      "source": "dragon-ui-studio/variants/astra/theme/silver-scale-astra-night/styles/overrides.css",
+      "distributionRef": "zipzippipe-authorization-20261004-noncommercial-project"
+    },
+    {
+      "file": "themes/astra-night/styles/tokens.css",
+      "size": 1253,
+      "sha256": "143b85238beee7f597f88d660d22e49e227ac36fd1c1daa6e3423f1a1e3ba6e0",
+      "source": "dragon-ui-studio/variants/astra/theme/silver-scale-astra-night/styles/tokens.css",
+      "distributionRef": "zipzippipe-authorization-20261004-noncommercial-project"
+    }
+  ]
+}

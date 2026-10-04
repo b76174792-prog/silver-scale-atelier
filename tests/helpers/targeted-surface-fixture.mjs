@@ -1,0 +1,26 @@
+import {getAdapter} from '../../src/runtime/compatibility.mjs';
+export function targetedFixture({kind='default',extraAncestors=0}={}){
+ const fixture={rectangleReads:0,queries:[],writes:0},adapter=getAdapter('local-msix-26.928.3736.0-chat-work');
+ const denied=()=>{throw Error('Forbidden private read or mutation');};
+ const make=({tag='div',attrs={},classes=[],rect={},style={},shadow=null}={})=>{
+  const list=[],classSet=new Set(classes),bounds={x:290,y:96,width:1412,height:320,...rect};
+  const n={tagName:tag.toUpperCase(),parentElement:null,shadowRoot:shadow,styleRecord:{display:'block',visibility:'visible',opacity:'1',direction:'ltr',position:'static',flexDirection:'column',flexGrow:'0',flexShrink:'1',flexBasis:'auto',height:bounds.height+'px',minHeight:'0px',maxHeight:'none',boxSizing:'border-box',overflowX:'hidden',overflowY:'auto',paddingTop:'0px',paddingBottom:'0px',borderTopWidth:'0px',borderBottomWidth:'0px',...style},clientWidth:bounds.width,clientHeight:bounds.height,scrollWidth:bounds.width,scrollHeight:bounds.height,isContentEditable:attrs.contenteditable==='true',
+   getBoundingClientRect(){fixture.rectangleReads++;return {...bounds};},getClientRects(){return bounds.width>0&&bounds.height>0?[bounds]:[];},
+   checkVisibility(){for(let p=this;p;p=p.parentElement)if(p.styleRecord.display==='none'||p.styleRecord.visibility==='hidden'||p.styleRecord.opacity==='0')return false;return true;},
+   matches(selector){if(selector===':empty')return list.length===0;if(selector===':placeholder-shown')return ['TEXTAREA','INPUT'].includes(this.tagName)&&attrs.placeholder!==undefined;if(selector==='input,textarea')return ['TEXTAREA','INPUT'].includes(this.tagName);if(selector.includes(','))return selector.split(',').some(s=>this.matches(s.trim()));if(selector.includes(']['))return selector.match(/\[[^\]]+\]/g).every(s=>this.matches(s));const c=selector.match(/^\[class~="([^"]+)"\]$/);if(c)return classSet.has(c[1]);const a=selector.match(/^\[([^=\]]+)(?:="([^"]*)")?\]$/);if(a)return a[2]===undefined?Object.hasOwn(attrs,a[1]):attrs[a[1]]===a[2];return this.tagName.toLowerCase()===selector;},
+   append(child){list.push(child);child.parentElement=this;},remove(child){const i=list.indexOf(child);if(i>=0)list.splice(i,1);child.parentElement=null;},
+   get firstElementChild(){return list.find(x=>x.tagName)||null;},get nextElementSibling(){if(!this.parentElement)return null;const siblings=this.parentElement.elements;return siblings[siblings.indexOf(this)+1]||null;},get elements(){return list.filter(x=>x.tagName);},get childElementCount(){return this.elements.length;},get childNodes(){return list;}
+  };
+  for(const key of ['innerText','textContent','innerHTML','outerHTML','value','className','id','dataset','attributes','title','contentDocument','contentWindow'])Object.defineProperty(n,key,{get:denied});
+  n.getAttribute=denied;n.setAttribute=denied;return n;
+ };
+ const root=make(),main=make({tag:'main',rect:{height:971}}),shell=make({attrs:{'data-app-shell-main-content-layout':''},rect:{height:919}}),stage=make({attrs:{'data-ct-slot':'conversation.stage'},style:{display:'flex'}}),wrapper=make({attrs:{'data-request-input-activity-root':'','data-ct-slot':'conversation.viewport'},classes:['group/thread-scroll-layout'],style:{position:'relative',flexGrow:'1',flexBasis:'0%'}}),scroll=make({attrs:kind==='default'?{'data-app-action-timeline-scroll':''}:{},classes:['thread-scroll-container'],style:{display:'flex'}}),content=make(),navigation=make({attrs:{'data-thread-user-message-navigation-content':''}}),footer=make({attrs:{'data-thread-scroll-footer':'true'},rect:{y:356,height:44}}),composerRoot=make({attrs:{'data-codex-composer-root':''},rect:{y:356,height:44}}),body=make({attrs:{'data-composer-body':''},rect:{y:356,width:736,height:44},style:{display:'flex'}}),editor=make({attrs:{contenteditable:'true',role:'textbox'},rect:{y:360,width:618,height:36}}),paragraph=make({tag:'p'}),br=make({tag:'br'});
+ root.append(main);main.append(shell);shell.append(stage);stage.append(wrapper);wrapper.append(scroll);scroll.append(content);content.append(navigation);(kind==='default'?scroll:wrapper).append(footer);footer.append(composerRoot);composerRoot.append(body);
+ let parent=body;for(let i=0;i<extraAncestors;i++){const child=make();parent.append(child);parent=child;}parent.append(editor);editor.append(paragraph);paragraph.append(br);
+ const editors=[editor],stops=[];
+ const query=selector=>{fixture.queries.push(selector);if(selector.includes('input[type="password"]'))return kind==='protected'?[make()]:[];if(selector===adapter.selectors.composer)return editors;if(selector.includes('button[aria-label='))return stops;throw Error('Unapproved document query: '+selector);};
+ fixture.make=make;fixture.adapter=adapter;fixture.editors=editors;fixture.stops=stops;fixture.nodes={root,main,shell,stage,wrapper,scroll,content,navigation,footer,composerRoot,body,editor,paragraph,br};
+ fixture.globals={location:{href:kind==='outside'?'https://example.invalid/':'app://-/index.html'},innerWidth:1707,innerHeight:1019,devicePixelRatio:1.5,getComputedStyle:n=>n.styleRecord,document:{visibilityState:'visible',hasFocus:()=>true,querySelector:s=>query(s)[0]||null,querySelectorAll:query,getElementById:denied,createElement:denied}};
+ if(kind==='unknown')stage.remove(wrapper);
+ return fixture;
+}

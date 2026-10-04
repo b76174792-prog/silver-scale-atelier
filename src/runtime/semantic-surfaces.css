@@ -1,0 +1,101 @@
+/* Semantic palette bridge; no global descendant color or SVG fill override. */
+:root[data-ct-theme] {
+ --app-color-text-foreground:var(--ss-text)!important;
+ --app-color-text-foreground-secondary:var(--ss-muted)!important;
+ --app-color-text-foreground-tertiary:var(--ss-muted)!important;
+ --color-token-foreground:var(--ss-text)!important;
+ --color-token-dropdown-foreground:var(--ss-text)!important;
+ --color-token-description-foreground:var(--ss-muted)!important;
+ --color-text-primary:var(--ss-text)!important;
+ --color-text-primary-soft:var(--ss-text)!important;
+ --color-text-primary-solid:var(--ss-base)!important;
+ --color-text-primary-ghost:var(--ss-text)!important;
+ --color-text-primary-ghost-hover:var(--ss-text)!important;
+ --color-text-primary-outline:var(--ss-text)!important;
+ --color-text-primary-outline-hover:var(--ss-text)!important;
+ --color-text-primary-surface:var(--ss-text)!important;
+ --color-text-primary-soft-alt:var(--ss-text)!important;
+ --color-text-secondary:var(--ss-muted)!important;
+ --color-text-tertiary:var(--ss-muted)!important;
+ --color-text-secondary-soft:var(--ss-muted)!important;
+ --color-text-secondary-soft-alt:var(--ss-muted)!important;
+ --color-text-secondary-ghost:var(--ss-muted)!important;
+ --color-text-secondary-ghost-hover:var(--ss-muted)!important;
+ --color-text-secondary-outline:var(--ss-muted)!important;
+ --color-text-secondary-outline-hover:var(--ss-muted)!important;
+ --color-text-info:var(--ss-accent)!important;
+ --app-color-text-accent:var(--ss-accent)!important;
+ --color-icon-primary:var(--ss-text)!important;
+ --color-icon-secondary:var(--ss-muted)!important;
+ --app-color-icon-primary:var(--ss-text)!important;
+ --color-codex-icon:var(--ss-text)!important;
+ --color-codex-icon-active:var(--ss-text)!important;
+ --color-token-text-link-foreground:var(--ss-accent)!important;
+ --color-background-primary-soft:var(--ss-surface)!important;
+ --color-background-panel:var(--ss-surface)!important;
+ --color-background-primary-soft-alpha:var(--ss-surface)!important;
+ --color-background-primary-surface:var(--ss-selected)!important;
+ --color-background-primary-ghost-hover:var(--ss-selected)!important;
+ --color-background-primary-ghost-active:var(--ss-selected)!important;
+ --color-background-secondary-soft:var(--ss-surface)!important;
+ --color-surface-elevated:var(--ss-panel,var(--ss-surface))!important;
+ --color-surface-elevated-primary:var(--ss-panel,var(--ss-surface))!important;
+ --color-border:var(--ss-control)!important;
+ --color-token-border:var(--ss-control)!important;
+ --color-token-input-border:var(--ss-control)!important;
+ --color-border-primary:var(--ss-control)!important;
+ --color-border-primary-outline:var(--ss-control)!important;
+ --color-codex-editor-inline-code-foreground:var(--ss-text)!important;
+ --color-codex-terminal-foreground:var(--ss-text)!important;
+ --app-color-background-editor-opaque:var(--ss-base)!important;
+ color:var(--ss-text)!important;
+}
+:root[data-ct-theme] body {color:var(--ss-text)!important;}
+:root[data-ct-theme] [class~="text-token-text-tertiary/50"] {color:var(--ss-muted)!important;}
+:root[data-ct-theme] :is([role="dialog"],[role="menu"],[role="listbox"],[role="tooltip"]) {color:var(--ss-text)!important;}
+/* Reading protection is a viewport-wide gradient behind the native text layout. */
+:root[data-ct-theme*=".astra."] [data-app-action-timeline-scroll] [data-markdown-text-style] {
+ background:transparent!important;border-radius:0;box-shadow:none!important;
+}
+:root[data-ct-theme] table {border-color:var(--ss-control)!important;}
+:root[data-ct-theme] :is(th,td) {border-color:var(--ss-control)!important;}
+:root[data-ct-theme] [data-ct-slot="conversation.viewport"]::before {pointer-events:none!important;}
+/* The native absolute composer footer is anchored to the viewport, never the scroller. */
+:root[data-ct-theme] [data-app-action-timeline-scroll] {position:static!important;isolation:isolate!important;}
+:root[data-ct-theme][data-ct-color-scheme="dark"] {
+ --color-text-danger:#ff9cb0!important;
+ --color-text-danger-ghost:#ff9cb0!important;
+ --color-text-danger-ghost-hover:#ff9cb0!important;
+ --color-text-danger-outline:#ff9cb0!important;
+ --color-text-danger-outline-hover:#ff9cb0!important;
+ --app-color-text-danger:#ff9cb0!important;
+ --color-text-danger-soft:#ff9cb0!important;
+ --color-text-danger-surface:#ff9cb0!important;
+ --color-background-danger-soft:#462833!important;
+ --color-background-danger-soft-hover:#57313f!important;
+ --color-background-danger-surface:#462833!important;
+ --color-chart-purple:#c7a8ff!important;
+ --color-text-warning:#edc98b!important;
+ --app-color-text-warning:#edc98b!important;
+ --color-text-success:#9cd1b2!important;
+ --app-color-text-success:#9cd1b2!important;
+}
+/* Q-night uses the same native caption glyphs, with its own original palette. */
+:root[data-ct-theme^="local.silver-scale."]:not([data-ct-theme*=".astra."])[data-ct-color-scheme="dark"] [class*="_ApplicationMenuTopBar_"] {background:var(--ss-sidebar)!important;color:var(--ss-text)!important;}
+:root[data-ct-theme^="local.silver-scale."]:not([data-ct-theme*=".astra."])[data-ct-color-scheme="dark"][data-theme="light"] [class*="_ApplicationMenuTopBar_"] {background:linear-gradient(to left,#e0d7ea 0 46px,#bdc5df 46px 92px,#cdd5e9 92px 138px,var(--ss-sidebar) 138px)!important;}
+:root[data-ct-theme] [data-composer-surface-variant] {--opacity-composer-placeholder:1!important;}
+/* The native PDF/artifact canvas stays original; only its floating controls use theme surfaces. */
+:root[data-ct-theme] [data-testid="viewer-header"] [class*="_controlSurface_"] {
+ background:var(--ss-surface)!important;color:var(--ss-text)!important;border-color:var(--ss-control)!important;
+}
+/* Empty native overlay headers must not cover the profile page's own toolbar. */
+:root[data-ct-theme] header[data-ct-native-titlebar]:not(:has(button,a,[role="button"])) {
+ background:transparent!important;border-color:transparent!important;
+}
+/* Installed dark theme can coexist with the native application's light preference. */
+:root[data-ct-theme] [data-user-message-bubble] .rich-text-user-turn {color:var(--ss-text)!important;}
+:root[data-ct-theme][data-ct-color-scheme="dark"] pre code [class*="text-codex-syntax-"] {color:var(--ss-text)!important;}
+:root[data-ct-theme][data-ct-color-scheme="dark"] pre code .text-codex-syntax-variable {color:#cfb4ff!important;}
+:root[data-ct-theme][data-ct-color-scheme="dark"] pre code .text-codex-syntax-literal {color:#edc28e!important;}
+:root[data-ct-theme][data-ct-color-scheme="dark"] pre code .text-codex-syntax-keyword {color:#eab4d3!important;}
+:root[data-ct-theme][data-ct-color-scheme="dark"] pre code [class*="_Comment_"] {color:#b2b6cc!important;}

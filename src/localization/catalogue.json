@@ -1,0 +1,504 @@
+{
+  "schemaVersion": 1,
+  "locales": {
+    "zh-CN": {
+      "direction": "ltr"
+    },
+    "en": {
+      "direction": "ltr"
+    },
+    "es": {
+      "direction": "ltr"
+    },
+    "fr": {
+      "direction": "ltr"
+    },
+    "ar": {
+      "direction": "rtl"
+    },
+    "ru": {
+      "direction": "ltr"
+    }
+  },
+  "messages": {
+    "app.title": {
+      "args": {}
+    },
+    "app.version": {
+      "args": {
+        "version": {
+          "type": "version"
+        }
+      }
+    },
+    "app.subtitle": {
+      "args": {}
+    },
+    "app.support": {
+      "args": {}
+    },
+    "app.closeHint": {
+      "args": {}
+    },
+    "app.modeHint": {
+      "args": {}
+    },
+    "app.alreadyOpen": {
+      "args": {}
+    },
+    "app.failed": {
+      "args": {}
+    },
+    "language.auto": {
+      "args": {}
+    },
+    "label.language": {
+      "args": {}
+    },
+    "label.program": {
+      "args": {}
+    },
+    "label.data": {
+      "args": {}
+    },
+    "label.client": {
+      "args": {}
+    },
+    "label.version": {
+      "args": {}
+    },
+    "label.code": {
+      "args": {}
+    },
+    "label.details": {
+      "args": {}
+    },
+    "label.history": {
+      "args": {}
+    },
+    "label.time": {
+      "args": {}
+    },
+    "button.enable": {
+      "args": {}
+    },
+    "button.off": {
+      "args": {}
+    },
+    "button.stop": {
+      "args": {}
+    },
+    "button.refresh": {
+      "args": {}
+    },
+    "button.importResources": {
+      "args": {}
+    },
+    "button.packs": {
+      "args": {}
+    },
+    "button.diagnostics": {
+      "args": {}
+    },
+    "button.rebind": {
+      "args": {}
+    },
+    "button.reconcile": {
+      "args": {}
+    },
+    "button.quit": {
+      "args": {}
+    },
+    "button.ok": {
+      "args": {}
+    },
+    "button.cancel": {
+      "args": {}
+    },
+    "button.yes": {
+      "args": {}
+    },
+    "button.no": {
+      "args": {}
+    },
+    "button.close": {
+      "args": {}
+    },
+    "theme.night": {
+      "args": {}
+    },
+    "theme.day": {
+      "args": {}
+    },
+    "theme.focus": {
+      "args": {}
+    },
+    "density.simple": {
+      "args": {}
+    },
+    "density.balanced": {
+      "args": {}
+    },
+    "density.rich": {
+      "args": {}
+    },
+    "status.detecting": {
+      "args": {}
+    },
+    "status.noClient": {
+      "args": {}
+    },
+    "status.supported": {
+      "args": {}
+    },
+    "status.unsupported": {
+      "args": {}
+    },
+    "status.resourcesReady": {
+      "args": {}
+    },
+    "status.resourcesMissing": {
+      "args": {}
+    },
+    "status.disconnected": {
+      "args": {}
+    },
+    "status.applied": {
+      "args": {}
+    },
+    "status.hostActive": {
+      "args": {}
+    },
+    "status.working": {
+      "args": {}
+    },
+    "status.confirmed": {
+      "args": {}
+    },
+    "status.exitQueued": {
+      "args": {}
+    },
+    "status.restoring": {
+      "args": {}
+    },
+    "status.exitUnconfirmed": {
+      "args": {}
+    },
+    "status.clientKept": {
+      "args": {}
+    },
+    "status.notSaved": {
+      "args": {}
+    },
+    "status.localePending": {
+      "args": {}
+    },
+    "status.localeSynced": {
+      "args": {}
+    },
+    "status.corruptConfig": {
+      "args": {}
+    },
+    "status.missingTime": {
+      "args": {}
+    },
+    "status.historicalOperation": {
+      "args": {}
+    },
+    "status.historicalError": {
+      "args": {}
+    },
+    "status.localMigration": {
+      "args": {}
+    },
+    "status.externalPending": {
+      "args": {}
+    },
+    "status.localChange": {
+      "args": {}
+    },
+    "restoration.confirmed": {
+      "args": {}
+    },
+    "restoration.lease_pending": {
+      "args": {}
+    },
+    "restoration.unknown": {
+      "args": {}
+    },
+    "confirm.enableTitle": {
+      "args": {}
+    },
+    "confirm.enable": {
+      "args": {}
+    },
+    "confirm.rightsTitle": {
+      "args": {}
+    },
+    "confirm.rights": {
+      "args": {}
+    },
+    "confirm.removeTitle": {
+      "args": {}
+    },
+    "confirm.remove": {
+      "args": {}
+    },
+    "picker.resources": {
+      "args": {}
+    },
+    "picker.zip": {
+      "args": {}
+    },
+    "diagnostic.title": {
+      "args": {}
+    },
+    "diagnostic.privacy": {
+      "args": {}
+    },
+    "diagnostic.generic": {
+      "args": {
+        "code": {
+          "type": "code"
+        }
+      }
+    },
+    "diagnostic.failed": {
+      "args": {}
+    },
+    "diagnostic.unavailable": {
+      "args": {}
+    },
+    "pack.title": {
+      "args": {}
+    },
+    "pack.summary": {
+      "args": {}
+    },
+    "pack.loading": {
+      "args": {}
+    },
+    "pack.applyCharacter": {
+      "args": {}
+    },
+    "pack.applyScene": {
+      "args": {}
+    },
+    "pack.characterLicense": {
+      "args": {}
+    },
+    "pack.sceneLicense": {
+      "args": {}
+    },
+    "pack.removeCharacter": {
+      "args": {}
+    },
+    "pack.removeScene": {
+      "args": {}
+    },
+    "pack.reset": {
+      "args": {}
+    },
+    "pack.import": {
+      "args": {}
+    },
+    "pack.refresh": {
+      "args": {}
+    },
+    "pack.busy": {
+      "args": {}
+    },
+    "pack.none": {
+      "args": {}
+    },
+    "pack.ready": {
+      "args": {}
+    },
+    "pack.originalCharacter": {
+      "args": {}
+    },
+    "pack.originalScene": {
+      "args": {}
+    },
+    "pack.staticFour": {
+      "args": {}
+    },
+    "pack.staticSingle": {
+      "args": {}
+    },
+    "pack.sceneLayers": {
+      "args": {}
+    },
+    "menu.environment": {
+      "args": {}
+    },
+    "menu.outfits": {
+      "args": {}
+    },
+    "menu.theme": {
+      "args": {}
+    },
+    "menu.environmentTitle": {
+      "args": {}
+    },
+    "menu.outfitTitle": {
+      "args": {}
+    },
+    "menu.switching": {
+      "args": {}
+    },
+    "menu.saving": {
+      "args": {}
+    },
+    "menu.enableFirst": {
+      "args": {}
+    },
+    "menu.focusHidden": {
+      "args": {}
+    },
+    "menu.sharedDensity": {
+      "args": {}
+    },
+    "menu.noCharacters": {
+      "args": {}
+    },
+    "menu.resourceUnavailable": {
+      "args": {}
+    },
+    "menu.characterUnavailable": {
+      "args": {}
+    },
+    "theme.eyebrow": {
+      "args": {}
+    },
+    "theme.heroTitle": {
+      "args": {}
+    },
+    "theme.heroDescription": {
+      "args": {}
+    },
+    "theme.promptTitle": {
+      "args": {}
+    },
+    "theme.bannerTitle": {
+      "args": {}
+    },
+    "theme.bannerDescription": {
+      "args": {}
+    },
+    "error.cancelled": {
+      "args": {}
+    },
+    "error.deadline": {
+      "args": {}
+    },
+    "error.helper_failed": {
+      "args": {}
+    },
+    "error.helper_timeout": {
+      "args": {}
+    },
+    "error.identity": {
+      "args": {}
+    },
+    "error.clientChanged": {
+      "args": {}
+    },
+    "error.unsupportedClient": {
+      "args": {}
+    },
+    "error.capability": {
+      "args": {}
+    },
+    "error.foreignSession": {
+      "args": {}
+    },
+    "error.reconcile": {
+      "args": {}
+    },
+    "error.state": {
+      "args": {}
+    },
+    "error.lock": {
+      "args": {}
+    },
+    "error.startup": {
+      "args": {}
+    },
+    "error.stop": {
+      "args": {}
+    },
+    "error.pack": {
+      "args": {}
+    },
+    "error.invalidRequest": {
+      "args": {}
+    },
+    "error.rebind": {
+      "args": {}
+    },
+    "error.cleanup": {
+      "args": {}
+    },
+    "error.ownerEnded": {
+      "args": {}
+    },
+    "error.protocol": {
+      "args": {}
+    },
+    "status.rebound": {
+      "args": {}
+    },
+    "status.reconciled": {
+      "args": {}
+    },
+    "port.listening": {
+      "args": {}
+    },
+    "port.absent": {
+      "args": {}
+    },
+    "pack.builtin": {
+      "args": {}
+    },
+    "pack.builtinLicense": {
+      "args": {}
+    },
+    "menu.current": {
+      "args": {}
+    },
+    "menu.characterPending": {
+      "args": {}
+    },
+    "menu.characterOff": {
+      "args": {}
+    },
+    "menu.characterFocus": {
+      "args": {}
+    },
+    "menu.characterKeep": {
+      "args": {}
+    },
+    "menu.simpleDescription": {
+      "args": {}
+    },
+    "menu.balancedDescription": {
+      "args": {}
+    },
+    "menu.richDescription": {
+      "args": {}
+    },
+    "menu.enable": {
+      "args": {}
+    },
+    "menu.disable": {
+      "args": {}
+    },
+    "error.uiSync": {
+      "args": {}
+    },
+    "status.localeFailed": {
+      "args": {}
+    }
+  }
+}

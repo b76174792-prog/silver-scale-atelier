@@ -1,0 +1,34 @@
+/* Page-local Astra controls. Keep the editor geometry and native IME handling. */
+:root[data-ct-theme*=".astra."][data-ct-color-scheme="dark"] {
+  --color-background-primary-soft:#292e42!important;
+  --color-surface-elevated:#292e42!important;
+  --codex-titlebar-tint:#3c435d!important;
+}
+:root[data-ct-theme*=".astra."][data-ct-color-scheme="dark"] :is([data-composer-surface-variant],[data-codex-composer-root],[data-ct-slot="composer"]) {
+  --composer-layout-surface-background:#292e42!important;
+  --composer-layout-surface-backdrop-filter:none!important;
+  --opacity-composer-placeholder:1!important;
+  color:#f0f1fa!important;
+}
+:root[data-ct-theme*=".astra."][data-ct-color-scheme="dark"] [data-composer-surface-variant]:not([data-composer-surface-variant="inline"]),
+:root[data-ct-theme*=".astra."][data-ct-color-scheme="dark"] [data-chatgpt-composer] [data-composer-surface-variant] {
+  background:#292e42!important;
+  box-shadow:inset 0 0 0 1px #737d9e,0 5px 18px #10131b55!important;
+}
+:root[data-ct-theme*=".astra."][data-ct-color-scheme="dark"] :is([data-composer-markdown],[data-ct-slot="composer.editor"],[data-codex-composer-root] [contenteditable="true"]) {
+  color:#f0f1fa!important;-webkit-text-fill-color:#f0f1fa!important;caret-color:#ded0ff!important;
+}
+:root[data-ct-theme*=".astra."][data-ct-color-scheme="dark"] :is([data-composer-markdown],[data-ct-slot="composer.editor"]) ::selection {background:#675a99!important;color:white!important;}
+:root[data-ct-theme*=".astra."][data-ct-color-scheme="dark"] :is([data-composer-markdown],[data-ct-slot="composer.editor"]) .placeholder::before {color:#bdc3db!important;-webkit-text-fill-color:#bdc3db!important;opacity:1!important;}
+:root[data-ct-theme*=".astra."][data-ct-color-scheme="dark"] :is(header[data-ct-native-titlebar],header[data-ct-slot="titlebar"],[class*="_ApplicationMenuTopBar_"]) {
+  background:#3c435d!important;color:#f0f1fa!important;border-bottom:1px solid #7f88aa!important;
+}
+:root[data-ct-theme*=".astra."][data-ct-color-scheme="dark"] :is(header[data-ct-native-titlebar],header[data-ct-slot="titlebar"],[class*="_ApplicationMenuTopBar_"]) button {
+  color:#f0f1fa!important;background:#505976!important;box-shadow:inset 0 0 0 1px #8490b0!important;
+}
+:root[data-ct-theme*=".astra."][data-ct-color-scheme="dark"] :is(header[data-ct-native-titlebar],header[data-ct-slot="titlebar"],[class*="_ApplicationMenuTopBar_"]) button:hover {background:#6d638f!important;}
+/* Native caption glyphs follow the official appearance, not our CSS theme. */
+:root[data-ct-theme*=".astra."][data-ct-color-scheme="dark"][data-theme="light"] [class*="_ApplicationMenuTopBar_"] {background:linear-gradient(to left,#e0d7ea 0 46px,#bdc5df 46px 92px,#cdd5e9 92px 138px,#3c435d 138px)!important;}
+:root[data-ct-theme*=".astra."][data-ct-color-scheme="dark"] [data-composer-rail-item] {background:#292e42!important;color:#f0f1fa!important;border-color:#737d9e!important;}
+:root[data-ct-theme*=".astra."][data-ct-color-scheme="dark"] [data-composer-rail-item] :is(button,span,svg) {color:#d7dcf0!important;}
+:root[data-ct-theme*=".astra."][data-ct-color-scheme="dark"] [data-composer-body] {border-radius:18px!important;}

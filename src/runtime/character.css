@@ -1,0 +1,22 @@
+/* A pair of predecoded images, no canvas/video/filter animation and no text opacity. */
+#silver-scale-character{position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:-2;opacity:.49;mask-image:linear-gradient(to bottom,transparent,#000 8%,#000 72%,transparent);}
+#silver-scale-character img{position:absolute;inset-inline-end:-40px;top:0;height:112%;width:auto;max-width:none;opacity:0;transition:opacity 240ms ease-in-out;transform-origin:50% 65%;animation:ss-astra-breathe 8s ease-in-out infinite;}
+#silver-scale-character[data-ss-host-dir="rtl"]{direction:rtl;}
+#silver-scale-character[data-ss-host-dir="ltr"]{direction:ltr;}
+:root[data-ct-theme$=".astra.night"] #silver-scale-character[data-surface="conversation"] img{filter:drop-shadow(0 0 12px #c9bdff70) drop-shadow(0 0 30px #9298e433);}
+#silver-scale-character img.visible{opacity:1;}
+#silver-scale-character[data-static="true"] img{animation:none!important;transition:none!important;}
+#silver-scale-character[data-returning="true"] img{transition-duration:650ms;}
+#silver-scale-character[data-state="long-wait"] img{animation-duration:11s;}
+#silver-scale-character[data-paused="true"] img{animation-play-state:paused;}
+/* Registered on the same native plane as the old artwork; original layout is untouched. */
+[data-ss-character="true"]:has(> #silver-scale-character)::before{display:none!important;}
+[data-ct-slot="home.hero.foreground"][data-ss-character="true"]>[data-ct-slot="home.hero.foreground.asset"]{visibility:hidden!important;}
+#silver-scale-character[data-surface="home"]{z-index:1;opacity:1;mask-image:linear-gradient(to bottom,#000 85%,transparent);}
+#silver-scale-character[data-surface="home"] img{height:100%;width:100%;inset-inline-end:0;object-fit:contain;object-position:center bottom;}
+:root[data-ct-color-scheme="light"] #silver-scale-character[data-surface="conversation"]{opacity:.45;}
+@keyframes ss-astra-breathe{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-2px) scale(1.003)}}
+@media(max-width:1100px){#silver-scale-character[data-surface="conversation"] img{height:108%;inset-inline-end:auto;inset-inline-start:65%;transform:translateX(-65%);animation:none;}#silver-scale-character[data-surface="conversation"][data-ss-host-dir="rtl"] img{transform:translateX(65%);}}
+@media(prefers-reduced-motion:reduce){#silver-scale-character img{animation:none;transition:none!important;}}
+/* The figure fits the runtime's visible bounds even on content-sized wrappers. */
+#silver-scale-character[data-surface="conversation"] img{height:98%;max-height:100%;}

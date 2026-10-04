@@ -1,0 +1,44 @@
+{
+  "source": "installed official Store package static resources; read-only ASAR entries, no execution",
+  "clientVersion": "26.928.3736.0",
+  "key": "chatgptConversations.composer.stop.ariaLabel",
+  "records": [
+    {
+      "locale": "en",
+      "label": "Stop",
+      "resource": "webview/assets/app-primary-7b889402e22e.js",
+      "sha256": "a47d4d244d0d1d32215bcfd46c5e33a9d0d59208340b1212c3a7c893a045d5bb"
+    },
+    {
+      "locale": "zh-CN",
+      "label": "停止",
+      "resource": "webview/assets/zh-CN-3ed9eb1db28a.js",
+      "sha256": "c6ac10a9fb407a393ea002d9aa818a4c7ed0e215e9c8bf0cfe2b798a98e3756f"
+    },
+    {
+      "locale": "es",
+      "label": "Detener",
+      "resource": "webview/assets/es-ES-a09e6c9a5ccc.js",
+      "sha256": "702be913fa6c33b1fc1603e7913c605a4827a495d2108802f1a0a836c29e456c"
+    },
+    {
+      "locale": "fr",
+      "label": "Arrêter",
+      "resource": "webview/assets/fr-FR-4e96ed1a999d.js",
+      "sha256": "118145acfb14803124a604b88159a33b7ae5d18d61d48e9819a4dbdcd3ff2153"
+    },
+    {
+      "locale": "ar",
+      "label": "إيقاف",
+      "resource": "webview/assets/ar-743ccfe1af92.js",
+      "sha256": "e5b7a641707620c2904732accb22444bfdf76e9bc318808d8c877c96eedfed4d"
+    },
+    {
+      "locale": "ru",
+      "label": "Остановить",
+      "resource": "webview/assets/ru-RU-eeb3c45f90a0.js",
+      "sha256": "2799468c5b610a371d347c2ddfbb2544a07d89c780bdcc3249e27cf225c0c61c"
+    }
+  ],
+  "olderVersion": "26.917.8451.0 not locally observed; keep previous Chinese/English signal set"
+}

@@ -1,0 +1,150 @@
+{
+  "schemaVersion": 1,
+  "id": "local.silver-scale.01a0d2d8.astra.night",
+  "name": "银鳞书庭 · Astra · 夜间",
+  "description": "银鳞书庭 Astra 主题；原始形象作者 ZipZipPipe。",
+  "version": "0.2.0",
+  "author": {
+    "id": "local.personal",
+    "name": "银鳞书庭项目维护者（AI 辅助）"
+  },
+  "testedCodexVersions": [],
+  "styles": [
+    "styles/tokens.css",
+    "styles/overrides.css"
+  ],
+  "slots": [
+    "app.shell",
+    "code",
+    "code.inline",
+    "composer",
+    "composer.action",
+    "composer.action.icon",
+    "composer.action.label",
+    "composer.context",
+    "composer.editor",
+    "composer.panel",
+    "composer.permission",
+    "composer.permission.icon",
+    "composer.permission.label",
+    "composer.submit",
+    "composer.submit.icon",
+    "conversation.assistant",
+    "conversation.banner",
+    "conversation.banner.copy",
+    "conversation.banner.description",
+    "conversation.banner.eyebrow",
+    "conversation.banner.foreground",
+    "conversation.banner.foreground.asset",
+    "conversation.banner.media",
+    "conversation.banner.title",
+    "conversation.summary",
+    "conversation.user",
+    "diff",
+    "home.card",
+    "home.card.arrow.glyph",
+    "home.card.icon.glyph",
+    "home.card.label",
+    "home.hero",
+    "home.hero.copy",
+    "home.hero.description",
+    "home.hero.eyebrow",
+    "home.hero.foreground",
+    "home.hero.foreground.asset",
+    "home.hero.media",
+    "home.hero.title",
+    "home.prompt.title",
+    "main",
+    "menu",
+    "menu.icon",
+    "menu.item",
+    "menu.item.active",
+    "menu.item.checked",
+    "menu.label",
+    "menu.separator",
+    "menu.shortcut",
+    "page",
+    "page.content",
+    "page.surface",
+    "settings",
+    "settings.body",
+    "settings.canvas",
+    "settings.card",
+    "settings.control",
+    "settings.control.checked",
+    "settings.nav.item",
+    "settings.nav.item.active",
+    "settings.row.description",
+    "settings.row.separator",
+    "settings.row.title",
+    "settings.section.title",
+    "settings.sidebar",
+    "settings.switch.thumb",
+    "settings.switch.track",
+    "settings.switch.track.checked",
+    "sidebar",
+    "sidebar.footer.label",
+    "sidebar.header.icon",
+    "sidebar.item",
+    "sidebar.item.active",
+    "sidebar.item.active.icon",
+    "sidebar.item.active.label",
+    "sidebar.item.icon",
+    "sidebar.item.label",
+    "sidebar.section.header",
+    "sidebar.section.label",
+    "terminal",
+    "terminal.viewport"
+  ],
+  "permissions": [],
+  "preview": {
+    "background": "#F4F4F8",
+    "surface": "#FDFDFF",
+    "accent": "#4F5287"
+  },
+  "experience": {
+    "homeHero": {
+      "eyebrow": "银鳞书庭 · Astra",
+      "title": "把灵感，慢慢写成答案。",
+      "description": "让每一个好奇，都有安静展开的空间。",
+      "asset": "assets/environment-night.webp",
+      "fit": "cover",
+      "position": "center",
+      "foreground": "assets/home-foreground.webp"
+    },
+    "homePrompt": {
+      "title": "今天，从哪里开始？"
+    },
+    "decorations": [],
+    "conversationBanner": {
+      "eyebrow": "银鳞书庭 · Astra",
+      "title": "留一点安静，给正在展开的思考。",
+      "description": "银鳞书庭主题",
+      "asset": "assets/banner-night.webp",
+      "foreground": "assets/state-welcome.webp",
+      "fit": "cover",
+      "position": "center"
+    }
+  },
+  "locales": {
+    "en": {
+      "name": "Silver-Scale Atelier / Astra / Night",
+      "description": "SilverScaleAtelier Astra theme. Original artwork by ZipZipPipe.",
+      "experience": {
+        "homeHero": {
+          "eyebrow": "Silver-Scale Atelier",
+          "title": "Give your ideas room to unfold.",
+          "description": "A quiet place for every thoughtful question."
+        },
+        "homePrompt": {
+          "title": "Where shall we begin?"
+        },
+        "conversationBanner": {
+          "eyebrow": "Silver-Scale Atelier",
+          "title": "A little quiet for the thought taking shape.",
+          "description": "SilverScaleAtelier theme"
+        }
+      }
+    }
+  }
+}

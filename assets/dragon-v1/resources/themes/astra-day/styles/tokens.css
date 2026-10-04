@@ -1,0 +1,41 @@
+:root[data-ct-theme="local.silver-scale.01a0d2d8.astra.day"] {
+  --ss-base: #F4F4F8;
+  --ss-surface: #FDFDFF;
+  --ss-sidebar: #EBEEF5;
+  --ss-text: #252739;
+  --ss-muted: #5D627A;
+  --ss-accent: #4F5287;
+  --ss-selected: #E4E7F2;
+  --ss-line: #CDD2E1;
+  --ss-control: #798099;
+  --ss-error: #A22D47;
+  --ss-success: #276348;
+  --ss-code: #E9ECF4;
+  --ss-gold: #786034;
+}
+:root[data-ct-theme="local.silver-scale.01a0d2d8.astra.day"][data-ct-color-scheme="dark"] {
+  --ss-base: #171923;
+  --ss-surface: #202331;
+  --ss-sidebar: #1B1E2B;
+  --ss-text: #F0F1FA;
+  --ss-muted: #B5BCD4;
+  --ss-accent: #B7B8EF;
+  --ss-selected: #323750;
+  --ss-line: #464E6B;
+  --ss-control: #818CAA;
+  --ss-error: #FF9CB0;
+  --ss-success: #9CD1B2;
+  --ss-code: #181B28;
+  --ss-gold: #D9C18E;
+}
+:root[data-ct-theme="local.silver-scale.01a0d2d8.astra.day"] {
+  --ss-radius: 12px;
+  --ct-home-hero-max-width: 1080px;
+  --ct-home-hero-gap: 20px;
+  --ct-home-hero-foreground-width: min(46%, 420px);
+  --ct-home-hero-foreground-right: 0%;
+  --ct-home-hero-foreground-bottom: 0px;
+  --ct-conversation-banner-foreground-width: 74px;
+  --ct-conversation-banner-foreground-right: 16px;
+  --ct-conversation-banner-foreground-bottom: 0px;
+}

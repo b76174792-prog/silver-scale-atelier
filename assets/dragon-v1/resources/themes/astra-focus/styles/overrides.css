@@ -1,0 +1,210 @@
+:root[data-ct-theme="local.silver-scale.01a0d2d8.astra.focus"] [data-ct-slot="app.shell"],
+:root[data-ct-theme="local.silver-scale.01a0d2d8.astra.focus"] [data-ct-slot="main"],
+:root[data-ct-theme="local.silver-scale.01a0d2d8.astra.focus"] [data-ct-slot="page"],
+:root[data-ct-theme="local.silver-scale.01a0d2d8.astra.focus"] [data-ct-slot="page.content"],
+:root[data-ct-theme="local.silver-scale.01a0d2d8.astra.focus"] [data-ct-slot="settings"],
+:root[data-ct-theme="local.silver-scale.01a0d2d8.astra.focus"] [data-ct-slot="settings.canvas"],
+:root[data-ct-theme="local.silver-scale.01a0d2d8.astra.focus"] [data-ct-slot="settings.body"] {
+  background: var(--ss-base) !important;
+  color: var(--ss-text) !important;
+}
+
+:root[data-ct-theme="local.silver-scale.01a0d2d8.astra.focus"] [data-ct-slot="sidebar"],
+:root[data-ct-theme="local.silver-scale.01a0d2d8.astra.focus"] [data-ct-slot="settings.sidebar"] {
+  background: var(--ss-sidebar) !important;
+  border-color: var(--ss-line) !important;
+}
+
+:root[data-ct-theme="local.silver-scale.01a0d2d8.astra.focus"] [data-ct-slot="sidebar.item.label"],
+:root[data-ct-theme="local.silver-scale.01a0d2d8.astra.focus"] [data-ct-slot="sidebar.section.label"],
+:root[data-ct-theme="local.silver-scale.01a0d2d8.astra.focus"] [data-ct-slot="sidebar.footer.label"],
+:root[data-ct-theme="local.silver-scale.01a0d2d8.astra.focus"] [data-ct-slot="composer.editor"],
+:root[data-ct-theme="local.silver-scale.01a0d2d8.astra.focus"] [data-ct-slot="composer.action.label"],
+:root[data-ct-theme="local.silver-scale.01a0d2d8.astra.focus"] [data-ct-slot="composer.permission.label"],
+:root[data-ct-theme="local.silver-scale.01a0d2d8.astra.focus"] [data-ct-slot="home.card.label"],
+:root[data-ct-theme="local.silver-scale.01a0d2d8.astra.focus"] [data-ct-slot="home.prompt.title"],
+:root[data-ct-theme="local.silver-scale.01a0d2d8.astra.focus"] [data-ct-slot="settings.row.title"],
+:root[data-ct-theme="local.silver-scale.01a0d2d8.astra.focus"] [data-ct-slot="settings.section.title"],
+:root[data-ct-theme="local.silver-scale.01a0d2d8.astra.focus"] [data-ct-slot="menu.label"],
+:root[data-ct-theme="local.silver-scale.01a0d2d8.astra.focus"] [data-ct-slot="conversation.assistant"] {
+  color: var(--ss-text) !important;
+}
+
+:root[data-ct-theme="local.silver-scale.01a0d2d8.astra.focus"] [data-ct-slot="sidebar.item.icon"],
+:root[data-ct-theme="local.silver-scale.01a0d2d8.astra.focus"] [data-ct-slot="sidebar.header.icon"],
+:root[data-ct-theme="local.silver-scale.01a0d2d8.astra.focus"] [data-ct-slot="composer.action.icon"],
+:root[data-ct-theme="local.silver-scale.01a0d2d8.astra.focus"] [data-ct-slot="composer.permission.icon"],
+:root[data-ct-theme="local.silver-scale.01a0d2d8.astra.focus"] [data-ct-slot="home.card.icon.glyph"],
+:root[data-ct-theme="local.silver-scale.01a0d2d8.astra.focus"] [data-ct-slot="home.card.arrow.glyph"],
+:root[data-ct-theme="local.silver-scale.01a0d2d8.astra.focus"] [data-ct-slot="menu.icon"] {
+  color: var(--ss-accent) !important;
+}
+
+:root[data-ct-theme="local.silver-scale.01a0d2d8.astra.focus"] [data-ct-slot="sidebar.section.header"],
+:root[data-ct-theme="local.silver-scale.01a0d2d8.astra.focus"] [data-ct-slot="settings.row.description"],
+:root[data-ct-theme="local.silver-scale.01a0d2d8.astra.focus"] [data-ct-slot="menu.shortcut"] {
+  color: var(--ss-muted) !important;
+}
+
+:root[data-ct-theme="local.silver-scale.01a0d2d8.astra.focus"] [data-ct-slot="sidebar.item.active"],
+:root[data-ct-theme="local.silver-scale.01a0d2d8.astra.focus"] [data-ct-slot="settings.nav.item.active"],
+:root[data-ct-theme="local.silver-scale.01a0d2d8.astra.focus"] [data-ct-slot="menu.item.active"],
+:root[data-ct-theme="local.silver-scale.01a0d2d8.astra.focus"] [data-ct-slot="menu.item.checked"],
+:root[data-ct-theme="local.silver-scale.01a0d2d8.astra.focus"] [data-ct-slot="settings.control.checked"] {
+  background: var(--ss-selected) !important;
+  color: var(--ss-accent) !important;
+  border-radius: 8px !important;
+}
+
+:root[data-ct-theme="local.silver-scale.01a0d2d8.astra.focus"] [data-ct-slot="sidebar.item.active.icon"],
+:root[data-ct-theme="local.silver-scale.01a0d2d8.astra.focus"] [data-ct-slot="sidebar.item.active.label"] {
+  color: var(--ss-accent) !important;
+  font-weight: 600 !important;
+}
+
+:root[data-ct-theme="local.silver-scale.01a0d2d8.astra.focus"] [data-ct-slot="sidebar.item"]:hover,
+:root[data-ct-theme="local.silver-scale.01a0d2d8.astra.focus"] [data-ct-slot="composer.action"]:hover,
+:root[data-ct-theme="local.silver-scale.01a0d2d8.astra.focus"] [data-ct-slot="home.card"]:hover,
+:root[data-ct-theme="local.silver-scale.01a0d2d8.astra.focus"] [data-ct-slot="menu.item"]:hover,
+:root[data-ct-theme="local.silver-scale.01a0d2d8.astra.focus"] [data-ct-slot="settings.nav.item"]:hover {
+  background: var(--ss-selected) !important;
+}
+
+:root[data-ct-theme="local.silver-scale.01a0d2d8.astra.focus"] [data-ct-slot="composer"],
+:root[data-ct-theme="local.silver-scale.01a0d2d8.astra.focus"] [data-ct-slot="composer.context"],
+:root[data-ct-theme="local.silver-scale.01a0d2d8.astra.focus"] [data-ct-slot="composer.panel"],
+:root[data-ct-theme="local.silver-scale.01a0d2d8.astra.focus"] [data-ct-slot="home.card"],
+:root[data-ct-theme="local.silver-scale.01a0d2d8.astra.focus"] [data-ct-slot="settings.card"],
+:root[data-ct-theme="local.silver-scale.01a0d2d8.astra.focus"] [data-ct-slot="settings.control"],
+:root[data-ct-theme="local.silver-scale.01a0d2d8.astra.focus"] [data-ct-slot="menu"],
+:root[data-ct-theme="local.silver-scale.01a0d2d8.astra.focus"] [data-ct-slot="page.surface"],
+:root[data-ct-theme="local.silver-scale.01a0d2d8.astra.focus"] [data-ct-slot="conversation.summary"] {
+  background: var(--ss-surface) !important;
+  color: var(--ss-text) !important;
+  border: 1px solid var(--ss-line) !important;
+  border-radius: var(--ss-radius) !important;
+}
+
+:root[data-ct-theme="local.silver-scale.01a0d2d8.astra.focus"] [data-ct-slot="composer"],
+:root[data-ct-theme="local.silver-scale.01a0d2d8.astra.focus"] [data-ct-slot="settings.control"],
+:root[data-ct-theme="local.silver-scale.01a0d2d8.astra.focus"] [data-ct-slot="composer.permission"] {
+  border-color: var(--ss-control) !important;
+}
+
+:root[data-ct-theme="local.silver-scale.01a0d2d8.astra.focus"] [data-ct-slot="composer"] {
+  border-radius: 18px !important;
+  box-shadow: 0 8px 24px rgba(35, 20, 48, 0.06) !important;
+}
+
+:root[data-ct-theme="local.silver-scale.01a0d2d8.astra.focus"] [data-ct-slot="composer.editor"] {
+  caret-color: var(--ss-accent) !important;
+}
+
+:root[data-ct-theme="local.silver-scale.01a0d2d8.astra.focus"] [data-ct-slot="composer.submit"],
+:root[data-ct-theme="local.silver-scale.01a0d2d8.astra.focus"] [data-ct-slot="settings.switch.track.checked"] {
+  background: var(--ss-accent) !important;
+  color: var(--ss-surface) !important;
+}
+
+:root[data-ct-theme="local.silver-scale.01a0d2d8.astra.focus"] [data-ct-slot="composer.submit.icon"] {
+  color: var(--ss-surface) !important;
+}
+
+:root[data-ct-theme="local.silver-scale.01a0d2d8.astra.focus"] [data-ct-slot="settings.switch.track"] {
+  background: var(--ss-selected) !important;
+  border: 1px solid var(--ss-control) !important;
+}
+
+:root[data-ct-theme="local.silver-scale.01a0d2d8.astra.focus"] [data-ct-slot="settings.switch.thumb"] {
+  background: var(--ss-surface) !important;
+}
+
+:root[data-ct-theme="local.silver-scale.01a0d2d8.astra.focus"] [data-ct-slot="menu.separator"],
+:root[data-ct-theme="local.silver-scale.01a0d2d8.astra.focus"] [data-ct-slot="settings.row.separator"] {
+  border-color: var(--ss-line) !important;
+}
+
+:root[data-ct-theme="local.silver-scale.01a0d2d8.astra.focus"] [data-ct-slot="conversation.user"] {
+  background: var(--ss-selected) !important;
+  color: var(--ss-text) !important;
+  border-radius: 16px !important;
+}
+
+:root[data-ct-theme="local.silver-scale.01a0d2d8.astra.focus"] [data-ct-slot="code"],
+:root[data-ct-theme="local.silver-scale.01a0d2d8.astra.focus"] [data-ct-slot="code.inline"],
+:root[data-ct-theme="local.silver-scale.01a0d2d8.astra.focus"] [data-ct-slot="terminal"],
+:root[data-ct-theme="local.silver-scale.01a0d2d8.astra.focus"] [data-ct-slot="terminal.viewport"] {
+  background: var(--ss-code) !important;
+  border-color: var(--ss-line) !important;
+}
+
+:root[data-ct-theme="local.silver-scale.01a0d2d8.astra.focus"] [data-ct-slot="diff"] {
+  background: var(--ss-surface) !important;
+  border-color: var(--ss-line) !important;
+}
+
+:root[data-ct-theme="local.silver-scale.01a0d2d8.astra.focus"] [data-ct-slot="home.hero"] {
+  background: var(--ss-surface) !important;
+  border: 1px solid var(--ss-line) !important;
+  border-radius: 22px !important;
+  min-height: 160px !important;
+}
+
+:root[data-ct-theme="local.silver-scale.01a0d2d8.astra.focus"] [data-ct-slot="home.hero.copy"] {
+  background: var(--ss-surface) !important;
+  border-radius: 12px !important;
+  color: var(--ss-text) !important;
+}
+
+:root[data-ct-theme="local.silver-scale.01a0d2d8.astra.focus"] [data-ct-slot="home.hero.title"] {
+  color: var(--ss-text) !important;
+  font-size: 30px !important;
+  line-height: 1.35 !important;
+  font-weight: 600 !important;
+}
+
+:root[data-ct-theme="local.silver-scale.01a0d2d8.astra.focus"] [data-ct-slot="home.hero.description"],
+:root[data-ct-theme="local.silver-scale.01a0d2d8.astra.focus"] [data-ct-slot="home.hero.eyebrow"] {
+  color: var(--ss-muted) !important;
+}
+
+:root[data-ct-theme="local.silver-scale.01a0d2d8.astra.focus"] [data-ct-slot="home.hero.eyebrow"] {
+  color: var(--ss-gold) !important;
+}
+
+:root[data-ct-theme="local.silver-scale.01a0d2d8.astra.focus"] [data-ct-slot="home.hero.media"] {
+  opacity: 0.4 !important;
+}
+
+:root[data-ct-theme="local.silver-scale.01a0d2d8.astra.focus"] [data-ct-slot="home.hero.foreground"],
+:root[data-ct-theme="local.silver-scale.01a0d2d8.astra.focus"] [data-ct-slot="home.hero.foreground.asset"] {
+  pointer-events: none !important;
+}
+
+:root[data-ct-theme="local.silver-scale.01a0d2d8.astra.focus"] [data-ct-slot="composer.submit"]:focus-visible,
+:root[data-ct-theme="local.silver-scale.01a0d2d8.astra.focus"] [data-ct-slot="composer.action"]:focus-visible,
+:root[data-ct-theme="local.silver-scale.01a0d2d8.astra.focus"] [data-ct-slot="composer.permission"]:focus-visible,
+:root[data-ct-theme="local.silver-scale.01a0d2d8.astra.focus"] [data-ct-slot="sidebar.item"]:focus-visible,
+:root[data-ct-theme="local.silver-scale.01a0d2d8.astra.focus"] [data-ct-slot="menu.item"]:focus-visible,
+:root[data-ct-theme="local.silver-scale.01a0d2d8.astra.focus"] [data-ct-slot="settings.control"]:focus-visible,
+:root[data-ct-theme="local.silver-scale.01a0d2d8.astra.focus"] [data-ct-slot="home.card"]:focus-visible {
+  outline: 2px solid var(--ss-accent) !important;
+  outline-offset: 2px !important;
+}
+
+:root[data-ct-theme="local.silver-scale.01a0d2d8.astra.focus"] [data-ct-slot="composer.submit"]:disabled,
+:root[data-ct-theme="local.silver-scale.01a0d2d8.astra.focus"] [data-ct-slot="composer.action"]:disabled,
+:root[data-ct-theme="local.silver-scale.01a0d2d8.astra.focus"] [data-ct-slot="settings.control"]:disabled {
+  opacity: 0.5 !important;
+}
+
+@media (max-width: 760px) {
+:root[data-ct-theme="local.silver-scale.01a0d2d8.astra.focus"] [data-ct-slot="home.hero.foreground"] { opacity: 0 !important; }
+:root[data-ct-theme="local.silver-scale.01a0d2d8.astra.focus"] [data-ct-slot="home.hero.title"] { font-size: 24px !important; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+:root[data-ct-theme="local.silver-scale.01a0d2d8.astra.focus"] *,
+:root[data-ct-theme="local.silver-scale.01a0d2d8.astra.focus"] *::before,
+:root[data-ct-theme="local.silver-scale.01a0d2d8.astra.focus"] *::after { animation: none !important; transition: none !important; }
+}
