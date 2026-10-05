@@ -58,6 +58,15 @@ test('home uses its fixed layout relationship and dot remains unconfirmed',async
  await run(homeHtml,async(_page,resolve)=>assert.equal((await resolve()).page,'home'));
  await run('<div id="root"></div>',async(_page,resolve)=>{const result=await resolve();assert.equal(result.ok,false);assert.equal(result.page,'unknown');});
 });
+test('ambiguous home refuses mounting and exposes only bounded structure evidence',async()=>{
+ const html=homeHtml.replace('<div data-codex-composer-root data-composer-body>','<div data-codex-composer-root><div data-composer-body>').replace('</button></div></form>','</button></div></div></form>');
+ await run(html,async(page,resolve)=>{
+  await page.evaluate(`(()=>{window.contractMutations=[];new MutationObserver(rows=>contractMutations.push(rows.length)).observe(document,{subtree:true,childList:true,attributes:true,characterData:true});const deny=()=>{throw Error('Private read');};for(const [prototype,names] of [[Node.prototype,['textContent']],[Element.prototype,['innerHTML','outerHTML','attributes']],[HTMLElement.prototype,['innerText','title','dataset']],[HTMLInputElement.prototype,['value']],[HTMLTextAreaElement.prototype,['value']]])for(const name of names)Object.defineProperty(prototype,name,{get:deny,configurable:true});const original=Element.prototype.getAttribute;Element.prototype.getAttribute=function(name){if(name!=='aria-hidden')deny();return original.call(this,name);};})()`);
+  const result=await resolve();assert.equal(result.ok,false);assert.equal(result.reason,'HOME_RELATION_UNCONFIRMED');
+  assert.deepEqual(result.structureEvidence,{mainContainsLayout:true,layoutContainsEditor:true,homeComposerCount:2,codexComposerRootCount:1,composerBodyCount:1,composersContainingEditor:2,uniqueComposerContainsEditor:false});
+  assert.ok(Object.values(result.nodes).every(node=>node===null));assert.deepEqual(await page.evaluate('window.contractMutations'),[]);
+ });
+});
 test('settings uses its fixed panel selector without inventing a composer',async()=>{
  const html=`<!doctype html><html><body><div id="root"><main style="width:1000px;height:800px"><div data-app-shell-main-content-layout style="width:900px;height:700px"><section data-settings-panel-slug="general" ${style}></section></div></main></div></body></html>`;
  await run(html,async(_page,resolve)=>{const result=await resolve();assert.equal(result.ok,true);assert.equal(result.page,'settings');assert.equal(result.nodes.editor,null);});

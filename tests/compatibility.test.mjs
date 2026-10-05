@@ -32,3 +32,10 @@ test('missing optional character signal reports idle rather than completion or e
  assert.equal(typeof compatibility.characterSignalSnapshot,'function');
  assert.deepEqual(compatibility.characterSignalSnapshot({assistant:null,stop:null,error:null},()=>true),{available:false,generating:false,failed:false});
 });
+test('refusal evidence reaches capabilities without permitting the rejected page',()=>{
+ const adapter=compatibility.getAdapter('local-msix-26.930.2377.0-chat-work');
+ const structureEvidence={mainContainsLayout:true,layoutContainsEditor:true,homeComposerCount:2,codexComposerRootCount:1,composerBodyCount:1,composersContainingEditor:2,uniqueComposerContainsEditor:false};
+ const snapshot=compatibility.capabilitySnapshot(adapter,'eligible',()=>({ok:false,page:'unknown',mode:'unknown',reason:'HOME_RELATION_UNCONFIRMED',nodes:{},structureEvidence}));
+ assert.deepEqual(snapshot.structureEvidence,structureEvidence);assert.equal(snapshot.page,'unknown');assert.equal(compatibility.checkCapabilities(snapshot,adapter).ok,false);
+ assert.equal(compatibility.capabilitySnapshot(adapter,'protected',()=>{throw Error('Protected page must not be inspected');}).structureEvidence,undefined);
+});

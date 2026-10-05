@@ -246,7 +246,7 @@ try {
       if(await evaluate(preserveExpression(restoreExpression(sessionId)))!==true)throw failure('STOP_UNCONFIRMED');
       if(health.controller&&await evaluate(removeControllerExpression(controllerSessionId))!==true)throw failure('STOP_UNCONFIRMED');
       active=null;nextLease=0;localeComponentsKey=null;
-      await setPhase('suspended',{reason:capabilities.reason||'CAPABILITY_MISMATCH'});
+      await setPhase('suspended',{reason:capabilities.reason||'CAPABILITY_MISMATCH',structureEvidence:capabilities.structureEvidence});
       await new Promise(r=>setTimeout(r,500));continue;
      }
     }

@@ -17,7 +17,7 @@ export function capabilitySnapshot(adapter,surface,resolver){
  if(surface!=='eligible')return {surface,page:'unknown',flags:{}};
  if(adapter.surfaceContract==='active-v1'){
   const r=(resolver||resolveActiveSurface)(adapter,surface),n=r.nodes||{},page=r.ok?r.page:'unknown';
-  return {surface,page,mode:r.mode,reason:r.reason,flags:{shell:!!n.shell,homeLayout:page==='home',homeComposer:page==='home'&&!!n.composerRoot,conversationComposer:page==='conversation'&&!!n.composerRoot,timeline:page==='conversation'&&!!n.messageRegion,settingsPanel:page==='settings',sidebarScroll:false,titlebar:false}};
+  return {surface,page,mode:r.mode,reason:r.reason,...(r.structureEvidence?{structureEvidence:r.structureEvidence}:{}),flags:{shell:!!n.shell,homeLayout:page==='home',homeComposer:page==='home'&&!!n.composerRoot,conversationComposer:page==='conversation'&&!!n.composerRoot,timeline:page==='conversation'&&!!n.messageRegion,settingsPanel:page==='settings',sidebarScroll:false,titlebar:false}};
  }
  const root=document.getElementById('root');
  // Conservatively require the FIRST match to be active: some engine/controller
