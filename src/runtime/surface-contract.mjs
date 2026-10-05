@@ -60,7 +60,17 @@ export function resolveActiveSurface(adapter,surface){
  if(settings.length===1){const panel=settings[0];if(!main.contains(panel))return unknown('SETTINGS_RELATION_UNCONFIRMED');return result('settings','standard',{pageRoot:panel},panel);}
  if(!editor||!shell.contains(editor))return unknown('EDITOR_UNCONFIRMED');
  if(home.length===1){
-  const layout=home[0],composers=matches(layout,selectors.homeComposer),composer=composers.length===1?composers[0]:null;
+  const layout=home[0],composers=matches(layout,selectors.homeComposer);
+  let composer=composers.length===1?composers[0]:null;
+  if(composers.length===2){
+   const roots=matches(layout,'[data-codex-composer-root]'),bodies=matches(layout,'[data-composer-body]');
+   // Some native homes split these fixed anchors across one editor ancestry.
+   // A second root/body or a sibling candidate never authorizes a mount.
+   if(roots.length===1&&bodies.length===1&&roots[0]!==bodies[0]&&composers.includes(roots[0])&&composers.includes(bodies[0])&&roots[0].contains(editor)&&bodies[0].contains(editor)){
+    if(roots[0].contains(bodies[0]))composer=roots[0];
+    else if(bodies[0].contains(roots[0]))composer=bodies[0];
+   }
+  }
   if(!main.contains(layout)||!composer||!composer.contains(editor))return {...unknown('HOME_RELATION_UNCONFIRMED'),structureEvidence:{mainContainsLayout:main.contains(layout),layoutContainsEditor:layout.contains(editor),homeComposerCount:composers.length,codexComposerRootCount:matches(layout,'[data-codex-composer-root]').length,composerBodyCount:matches(layout,'[data-composer-body]').length,composersContainingEditor:composers.filter(node=>node.contains(editor)).length,uniqueComposerContainsEditor:!!composer&&composer.contains(editor)}};
   return result('home','standard',{pageRoot:layout,composerRoot:composer,editor,characterMount:layout,environmentMount:layout},layout,composer);
  }

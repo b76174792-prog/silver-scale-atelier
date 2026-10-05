@@ -59,13 +59,30 @@ test('home uses its fixed layout relationship and dot remains unconfirmed',async
  await run('<div id="root"></div>',async(_page,resolve)=>{const result=await resolve();assert.equal(result.ok,false);assert.equal(result.page,'unknown');});
 });
 test('ambiguous home refuses mounting and exposes only bounded structure evidence',async()=>{
- const html=homeHtml.replace('<div data-codex-composer-root data-composer-body>','<div data-codex-composer-root><div data-composer-body>').replace('</button></div></form>','</button></div></div></form>');
+ const html=homeHtml.replace('<div data-codex-composer-root data-composer-body>','<div data-codex-composer-root><div data-codex-composer-root><div data-composer-body>').replace('</button></div></form>','</button></div></div></div></form>');
  await run(html,async(page,resolve)=>{
   await page.evaluate(`(()=>{window.contractMutations=[];new MutationObserver(rows=>contractMutations.push(rows.length)).observe(document,{subtree:true,childList:true,attributes:true,characterData:true});const deny=()=>{throw Error('Private read');};for(const [prototype,names] of [[Node.prototype,['textContent']],[Element.prototype,['innerHTML','outerHTML','attributes']],[HTMLElement.prototype,['innerText','title','dataset']],[HTMLInputElement.prototype,['value']],[HTMLTextAreaElement.prototype,['value']]])for(const name of names)Object.defineProperty(prototype,name,{get:deny,configurable:true});const original=Element.prototype.getAttribute;Element.prototype.getAttribute=function(name){if(name!=='aria-hidden')deny();return original.call(this,name);};})()`);
   const result=await resolve();assert.equal(result.ok,false);assert.equal(result.reason,'HOME_RELATION_UNCONFIRMED');
-  assert.deepEqual(result.structureEvidence,{mainContainsLayout:true,layoutContainsEditor:true,homeComposerCount:2,codexComposerRootCount:1,composerBodyCount:1,composersContainingEditor:2,uniqueComposerContainsEditor:false});
+  assert.deepEqual(result.structureEvidence,{mainContainsLayout:true,layoutContainsEditor:true,homeComposerCount:3,codexComposerRootCount:2,composerBodyCount:1,composersContainingEditor:3,uniqueComposerContainsEditor:false});
   assert.ok(Object.values(result.nodes).every(node=>node===null));assert.deepEqual(await page.evaluate('window.contractMutations'),[]);
  });
+});
+test('one root and one body on the unique home editor chain resolve the outer composer',async()=>{
+ for(const [outer,inner] of [['data-codex-composer-root','data-composer-body'],['data-composer-body','data-codex-composer-root']]){
+  const html=homeHtml.replace('<div data-codex-composer-root data-composer-body>',`<div ${outer}><div ${inner}>`).replace('</button></div></form>','</button></div></div></form>');
+  await run(html,async(page,resolve)=>{
+   const result=await resolve();assert.equal(result.ok,true);assert.equal(result.page,'home');assert.equal(result.bounds.visible,true);
+   assert.equal(await page.production(`(()=>{const r=(${contract.resolveActiveSurface.toString()})(${JSON.stringify(adapter)},'eligible');return r.nodes.composerRoot===document.querySelector('[${outer}]')&&r.nodes.composerRoot.contains(r.nodes.editor);})()`),true);
+   await page.evaluate(`document.querySelector('[${inner}]').setAttribute('aria-hidden','true')`);assert.equal((await resolve()).ok,false);
+   await page.evaluate(`document.querySelector('[${inner}]').removeAttribute('aria-hidden')`);assert.equal((await resolve()).ok,true);
+   await page.evaluate(`document.querySelector('[${outer}]').setAttribute('inert','')`);assert.equal((await resolve()).ok,false);
+   await page.evaluate(`document.querySelector('[${outer}]').removeAttribute('inert')`);assert.equal((await resolve()).ok,true);
+  });
+ }
+});
+test('home root and body outside a common editor chain remain refused',async()=>{
+ const html=homeHtml.replace('<div data-codex-composer-root data-composer-body>','<div data-codex-composer-root><div data-composer-body style="height:40px">Synthetic sibling</div>');
+ await run(html,async(_page,resolve)=>{const result=await resolve();assert.equal(result.ok,false);assert.equal(result.reason,'HOME_RELATION_UNCONFIRMED');assert.equal(result.structureEvidence.composersContainingEditor,1);});
 });
 test('settings uses its fixed panel selector without inventing a composer',async()=>{
  const html=`<!doctype html><html><body><div id="root"><main style="width:1000px;height:800px"><div data-app-shell-main-content-layout style="width:900px;height:700px"><section data-settings-panel-slug="general" ${style}></section></div></main></div></body></html>`;

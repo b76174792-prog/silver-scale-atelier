@@ -23,6 +23,20 @@ const theme=await buildTheme('astra-night',session,adapter);
 const install=await getInstallExpression({adapter,ownerSessionId:session+1,hostInstanceId:'recent-theme-fixture',deadlineAt:Date.now()+120000});
 const snapshot=page=>page.production(`(()=>{const r=window.__codexThemeRuntime,c=window.__silverScaleController,k=document.getElementById('silver-scale-character'),s=c?.activeStructure?.(),footer=s?.nodes.footer?.getBoundingClientRect();return {runtime:!!r,theme:document.documentElement.dataset.ctTheme||null,slots:r?.slots?.length??null,page:c?.activePage?.()??null,mode:s?.mode??null,controller:!!c,figureCount:document.querySelectorAll('#silver-scale-character').length,figureBottom:k?.getBoundingClientRect().bottom??null,footerTop:footer?.top??null,stageSlot:s?.nodes.pageRoot?.getAttribute('data-ct-slot')??null,viewportSlot:s?.nodes.characterMount?.getAttribute('data-ct-slot')??null,viewportBackground:s?.nodes.characterMount?getComputedStyle(s.nodes.characterMount).backgroundColor:null,viewportIsolation:s?.nodes.characterMount?getComputedStyle(s.nodes.characterMount).isolation:null};})()`);
 
+test('separate home root and body use one shared runtime and restore on Off',async()=>{
+ const html=home.replace('<div data-composer-markdown contenteditable="true" style="width:700px;height:50px"></div>','<div data-composer-body style="width:750px;height:65px"><div data-composer-markdown contenteditable="true" style="width:700px;height:50px"></div></div>');
+ await withRendererFixture({browserPath:process.env.SILVER_SCALE_TEST_BROWSER,html},async page=>{
+  assert.equal(await page.production(`(${resolveActiveSurface.toString()})(${JSON.stringify(adapter)},'eligible').ok`),true);
+  await page.production(install);await page.production(theme.expression);await page.production(updateExpression(true,false,{theme:'astra-night'}));
+  await page.evaluate('new Promise(r=>setTimeout(r,350))');
+  const on=await snapshot(page);assert.equal(on.page,'home');assert.equal(on.runtime,true);assert.equal(on.figureCount,1,JSON.stringify(on));
+  await page.production(theme.expression);assert.equal((await snapshot(page)).figureCount,1,'repeat apply does not duplicate the figure');
+  await page.production(restoreExpression(session));await page.production(updateExpression(false));
+  const off=await snapshot(page);assert.equal(off.runtime,false);assert.equal(off.theme,null);assert.equal(off.figureCount,0);assert.equal(off.controller,true,'Off retains the approved minimal controller');
+  await page.production(removeControllerExpression(session+1));assert.equal((await snapshot(page)).controller,false);
+ });
+});
+
 for(const [name,html] of [['ordinary',ordinary],['dot',dot]])test(`active ${name} native edge fades follow the night surface and restore`,async()=>{
  const nativeStyle='<style>:root{--color-surface:white;--app-color-background-surface:white}.native-edge{background-image:linear-gradient(var(--color-surface),transparent)}.native-bottom{background-image:linear-gradient(to top,var(--color-surface),transparent)}</style>';
  const top='<div id="active-top-fade" aria-hidden="true" class="_MainContentTopFade_fixture _background_fixture native-edge" style="pointer-events:none;position:absolute;top:0;width:850px;height:40px"></div>';
