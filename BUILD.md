@@ -11,7 +11,7 @@
 
 Build 校验锁定哈希，编译管理器、身份/启动帮助程序及 PackTool，复制显式载荷和 26 个已批准项目资源，执行 Node 策略测试与载荷哈希/白名单验证，最后生成 Inno 安装器。Verify 会再次构建，执行原生 self-test 及隔离 Windows GUI 退出测试；因此最终产物验收期间不要无故重复 Verify。
 
-输出为 `dist/SilverScaleAtelier-1.0.0-beta.1-x64-Setup.exe`，文件清单为 `package-manifest.json`。对外版本是 1.0.0-beta.1，Windows 数值版本为 1.0.0.1。每次产品文件变化都需要新构建身份与受影响验证；不能把旧包的哈希或回执改名复用。
+输出为 `dist/SilverScaleAtelier-1.0.0-beta.1-x64-Setup.exe`，构建时生成文件清单 `package-manifest.json`。生成清单不作为源码跟踪；本版实际清单随 Release 提供。对外版本是 1.0.0-beta.1，Windows 数值版本为 1.0.0.1。每次产品文件变化都需要新构建身份与受影响验证；不能把旧包的哈希或回执改名复用。
 
 浏览器回归使用已有 Chromium 浏览器并建立一次性的隔离资料目录：
 
@@ -21,6 +21,6 @@ Build 校验锁定哈希，编译管理器、身份/启动帮助程序及 PackTo
 
 合成 DOM、单元测试和本地 GUI 测试辅助回归，不能替代真实官方宿主的普通/dot 独立验收及同安装包的干净 Windows 安装使用结果。准确兼容状态见 README 矩阵和对应发行记录。
 
-只读取证脚本 `scripts/Inspect-ThemeSurface.mjs` 不进入安装载荷。它分别报告观察是否完成、旧普通会话采集门槛及活动结构契约；`observed` 不代表生产兼容验收通过。3930 的真实普通首页/短会话及 dot 长会话已匹配共享契约，精确版本接入生产候选；仍需新最终安装包的生产和独立安装验收。旧采集器在首页/dot 报 `layout-missing` 或在生成/草稿期间报告未就绪时，保留原 blocked，不将它改为 PASS。
+只读取证脚本 `scripts/Inspect-ThemeSurface.mjs` 不进入安装载荷。它分别报告观察是否完成、旧普通会话采集门槛及活动结构契约；`observed` 不代表生产兼容验收通过。3930 的普通页面及既有长 dot 会话已有 v10 程序基线实测；本版最终文档构建与该基线的源码和载荷差异另行记录。第二宿主及干净环境剩余验收已退出本次发布门槛，未测结果仍保留为未测；具体范围见 README 和发行说明。旧采集器在首页/dot 报 `layout-missing` 或在生成/草稿期间报告未就绪时，保留原 blocked，不将它改为 PASS。
 
 软件许可与组件索引见 `src/LICENSE.txt`、`src/THIRD-PARTY.txt` 及 `vendor`/`src/upstream` 中的完整许可。面向用户的说明集中于 `src/用户须知.txt`。
