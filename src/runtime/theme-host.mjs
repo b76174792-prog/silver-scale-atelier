@@ -313,7 +313,7 @@ try {
   }catch(error){
    if(['CANCELLED','DEADLINE','CLIENT_CHANGED','CAPABILITY_MISMATCH'].includes(error.code)||/different theme session|FOREIGN_SESSION|outside approved/.test(error.message))throw error;
    // A bounded backoff handles renderer churn/sleep. Healthy streams never reinject.
-   failures++;if(failures>=12)throw Error('Repeated theme recovery failed; stopped until the user retries.');nextAttempt=Date.now()+Math.min(5000,500*2**Math.min(failures,4));
+   failures++;if(failures>=12)throw Object.assign(Error('Repeated theme recovery failed; stopped until the user retries.'),{lastRecoveryReason:error.message});nextAttempt=Date.now()+Math.min(5000,500*2**Math.min(failures,4));
    await setPhase('recovering',{reason:error.message});
    if(/CDP|closed|socket/i.test(error.message)){try{await reconnect();}catch{}}
    if(stop)throw error;
@@ -323,7 +323,7 @@ try {
  }catch(error){
  // Cancellation only removes this host's owned effects; no unrelated session is touched.
  try{await cdp.evaluate(preserveExpression(restoreExpression(sessionId)));await cdp.evaluate(preserveExpression(restoreExpression(priorSessionId)));await cdp.evaluate(removeControllerExpression(controllerSessionId));}catch{}
- await status({failure:error.message,errorCode:error.code||'HOST_FAILED',enabled:false,applied:false,phase:'failed'});process.exitCode=1;
+ await status({failure:error.message,errorCode:error.code||'HOST_FAILED',...(error.lastRecoveryReason!==undefined?{lastRecoveryReason:error.lastRecoveryReason}:{}),enabled:false,applied:false,phase:'failed'});process.exitCode=1;
 }finally{cdp.close();}
 }catch(error){
  try{const command=JSON.parse(await readFile(controlPath,'utf8'));if(command.hostInstanceId===hostInstanceId){const path=join(dir,'theme-status.json');await writeFile(path,JSON.stringify({...command,result:'failed',failure:error.message,errorCode:error.code||'HOST_START_FAILED',...displayDescriptor(error),enabled:false,applied:false,phase:'failed'}));}}catch{}

@@ -37,12 +37,14 @@ test('ambiguous_windows_refuse_apply and close both metadata connections',async(
  try{await Object.getPrototypeOf(async function(){}).constructor(...Object.keys(context),source)(...Object.values(context));const status=JSON.parse(await readFile(join(root,'theme-status.json'),'utf8'));assert.match(status.failure,/Multiple eligible/);assert.equal(mutations,0);assert.equal(closed,2);}finally{await rm(root,{recursive:true,force:true});}
 });
 
-async function hostCycles({cycles=10,protectedStop=false,transientWrites=0,transientReplay=false,failAfterAck=false,replayAfterRestore=false,localeScenario}={}){
+async function hostCycles({cycles=10,protectedStop=false,transientWrites=0,transientReplay=false,failAfterAck=false,replayAfterRestore=false,localeScenario,recoveryExhaustion=false}={}){
  const root=await mkdtemp(join(tmpdir(),'silver-host-'));const receipt=join(root,'launcher-receipt.json'),control=join(root,'theme-control.json'),statusFile=join(root,'theme-status.json');
  const window={},page=vm.createContext({...surfaceFixture().globals,window,Date,Error});let released=false,persisted=0,protectedPage=false,outsidePage=false,unavailablePage=false,protectedEvaluations=0,replayPending=false,replayWritten=false;
  const owner={pid:123,existingPids:[],startedMs:20,launchMs:10,expectedProfile:'test',actualProfile:'test',executable:'C:\\verified\\ChatGPT.exe',port:12345,listeners:[{pid:123,address:'127.0.0.1'}]};
- let afterLocale=null,capabilityAvailable=true;
- const cdp={evaluate:async code=>{if(protectedPage){protectedEvaluations++;throw Error('Probe execution surface refused');}const result=code.includes('document.hasFocus()')?{focused:true,visible:true}:vm.runInContext(code,page);if(afterLocale&&code.includes('function syncPageLocale')){const effect=afterLocale;afterLocale=null;await effect();}return result;},close(){}};
+ let afterLocale=null,capabilityAvailable=true,recoveryFaults=false,recoveryAttempts=0,clockOffset=0,closed=false;
+ const hostDate=class extends Date{static now(){return Date.now()+clockOffset;}};
+ const hostTimeout=(callback,delay)=>{if(recoveryFaults){clockOffset+=delay;return setTimeout(callback,0);}return setTimeout(callback,delay);};
+ const cdp={evaluate:async code=>{if(protectedPage){protectedEvaluations++;throw Error('Probe execution surface refused');}const result=code.includes('document.hasFocus()')?{focused:true,visible:true}:vm.runInContext(code,page);if(afterLocale&&code.includes('function syncPageLocale')){const effect=afterLocale;afterLocale=null;await effect();}return result;},close(){closed=true;}};
  const controller={getInstallExpression:async(options={})=>`(async()=>{await Promise.resolve();window.__silverScaleController={ownerSessionId:${Number(options.ownerSessionId)},host:{isConnected:true},ui:{locale:${JSON.stringify(options.ui?.locale||'en')},hostInstanceId:${JSON.stringify(options.hostInstanceId||null)},revision:0},syncLocale(bundle,request){this.ui={locale:bundle.locale,...request};return {controller:true,locale:bundle.locale,revision:request.revision};},fenceRequests(){delete this.request;return {sequence:0};},ping(){},setCharacters(){}};return true;})()`,removeControllerExpression:id=>`(()=>{if(window.__silverScaleController?.ownerSessionId!==${id})return false;delete window.__silverScaleController;return true;})()`,updateExpression:()=>'(true)',preserveExpression:x=>x};
  const health=async()=>({surface:outsidePage?'outside':protectedPage?'protected':unavailablePage?'unavailable':'eligible',runtime:!!window.__codexThemeRuntime,session:window.__codexThemeRuntime?.sessionId,style:!!window.__codexThemeRuntime,ownedVisualsPresent:!!window.__codexThemeRuntime||!!window.__silverScaleController,theme:window.__codexThemeRuntime?.id,rootMatches:true,controller:!!window.__silverScaleController,controllerSession:window.__silverScaleController?.ownerSessionId});
  let serial=0;
@@ -55,9 +57,20 @@ async function hostCycles({cycles=10,protectedStop=false,transientWrites=0,trans
  restoreExpression:id=>`(()=>{if(window.__codexThemeRuntime&&window.__codexThemeRuntime.sessionId!==${id})return false;delete window.__codexThemeRuntime;return true;})()`,...controller,requestExpression:'null',characterResources(){},compactCharacter(){},loadEnvironmentAssets(){},setSelection(){},characterCatalogue:async()=>[],switchPack(){},
  readPreference:async()=>({value:{enabled:false,theme:'astra-night',environmentDensity:'balanced'}}),savePreference:async()=>{persisted++;},process:{argv:['node','host',receipt,'host-fixture'],exitCode:0},fetch:async()=>({json:async()=>[{id:'page',type:'page',url:'app://-/index.html',webSocketDebuggerUrl:'ws://127.0.0.1/devtools/page/page'}]}),AbortSignal,Date,setTimeout,console,performance};
  const execute=Object.getPrototypeOf(async function(){}).constructor(...Object.keys(context),source);
+ const normalBuildTheme=context.buildTheme;
+ context.buildTheme=async(...args)=>{if(recoveryFaults)throw Error('Fixture recovery failure '+(++recoveryAttempts));return normalBuildTheme(...args);};
+ if(recoveryExhaustion){context.Date=hostDate;context.setTimeout=hostTimeout;}
  const running=execute(...Object.values(context));
  try{
   const first=await ack('fixture-1');assert.equal(first.result,'succeeded');assert.equal(first.applied,true,JSON.stringify(first));
+  if(recoveryExhaustion){
+   recoveryFaults=true;delete window.__codexThemeRuntime;
+   await running;const failed=JSON.parse(await readFile(statusFile,'utf8'));
+   assert.equal(recoveryAttempts,12);assert.equal(failed.errorCode,'HOST_FAILED');assert.equal(failed.result,'failed');assert.equal(failed.phase,'failed');assert.equal(failed.applied,false);assert.equal(failed.enabled,false);
+   assert.equal(failed.failure,'Repeated theme recovery failed; stopped until the user retries.');
+   assert.equal(failed.lastRecoveryReason,'Fixture recovery failure 12');
+   assert.equal(window.__codexThemeRuntime,undefined);assert.equal(window.__silverScaleController,undefined);assert.equal(closed,true);assert.equal(released,true);assert.equal(context.process.exitCode,1);return;
+  }
   if(localeScenario){const until=async predicate=>{const end=Date.now()+8000;while(Date.now()<end){const value=JSON.parse(await readFile(statusFile,'utf8'));if(predicate(value))return value;await new Promise(r=>setTimeout(r,20));}throw Error('Locale state did not converge');};const ended=await localeScenario({first,window,command,ack,until,setCapabilities:value=>{capabilityAvailable=value;},afterLocale:effect=>{afterLocale=effect;},cancel:id=>writeFile(cancellationPath(root,id),'cancel'),setSurface:value=>{protectedPage=value==='protected';unavailablePage=value==='unavailable';},protectedEvaluations:()=>protectedEvaluations,writeFailures:count=>{transientWrites=count;}});if(ended){await running;return;}}
   if(failAfterAck){outsidePage=true;await running;const failed=JSON.parse(await readFile(statusFile,'utf8'));assert.equal(failed.phase,'failed');assert.equal(failed.result,'failed',JSON.stringify(failed));return;}
   for(let n=0;n<cycles;n++){
@@ -88,6 +101,8 @@ test('a transient unknown layout suspends owned visuals and resumes only after t
 test('a transient status replace cannot publish a successful ACK before the snapshot is saved',()=>hostCycles({cycles:0,transientWrites:1}));
 test('a transient replace while replaying an ACK retains its original result without reapplying',()=>hostCycles({cycles:0,transientReplay:true}));
 test('a fatal host error after a completed command cannot inherit its succeeded result',()=>hostCycles({cycles:0,failAfterAck:true}));
+
+test('recovery exhaustion preserves the final actual reason and cleans owned resources',()=>hostCycles({cycles:0,recoveryExhaustion:true}));
 test('replaying an applied operation after restore preserves the current disabled state',()=>hostCycles({cycles:0,replayAfterRestore:true}));
 test('production host confirms the latest locale without restarting the theme; off only requires the controller',()=>hostCycles({cycles:0,localeScenario:async({first,window,command,ack})=>{
  assert.deepEqual(first.ui.capabilities,['ui-locale-v1']);const runtime=window.__codexThemeRuntime;
