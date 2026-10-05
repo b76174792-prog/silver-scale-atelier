@@ -151,6 +151,16 @@ export async function buildTheme(name,sessionId,adapter=getAdapter('local-experi
  const apply = () => {if(!activePageAllowsWrites())return null;`);
  if(adapter.surfaceContract==='active-v1'){
   const replace=(pattern,value)=>{if(!pattern.test(expression))throw Error('Pinned active-surface bridge changed');expression=expression.replace(pattern,value);};
+  // Full apply re-resolves geometry after clearing composer slots. Preserve the
+  // current confirmed home region until mountHero re-marks it: without its CSS,
+  // a compact home with a hidden hero briefly moves the input onto the mount top.
+  replace(/document\.querySelectorAll\(\s*'\[data-ct-slot="composer"\], \[data-ct-slot\^="composer\."\]'\s*\)\.forEach\(node => \{\s*if \(!node\.closest\('\[data-ct-mount\]'\)\) node\.removeAttribute\('data-ct-slot'\);\s*\}\);/,`const composerStructure=resolvedStructure();
+            const homeRegions=[...document.querySelectorAll('[data-ct-slot="composer.region"]')];
+            const homeRegion=homeRegions.length===1?homeRegions[0]:null;
+            const keepHomeRegion=composerStructure.ok&&composerStructure.page==='home'&&homeRegion&&homeRegion!==composerStructure.nodes.pageRoot&&homeRegion!==composerStructure.nodes.composerRoot&&composerStructure.nodes.pageRoot.contains(homeRegion)&&homeRegion.contains(composerStructure.nodes.composerRoot)?homeRegion:null;
+            document.querySelectorAll('[data-ct-slot="composer"], [data-ct-slot^="composer."]').forEach(node=>{
+              if(node!==keepHomeRegion&&!node.closest('[data-ct-mount]'))node.removeAttribute('data-ct-slot');
+            });`);
   // Native edge fades sit beside the page or composer, outside their palette slots.
   // Bind only unique visible edges related to the confirmed page; never theme body probes.
   replace(/const slots = \['app.shell', `adapter:\$\{adapter.id\}`\];/,`const slots = ['app.shell', \`adapter:\${adapter.id}\`];

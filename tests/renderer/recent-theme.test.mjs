@@ -189,6 +189,9 @@ test('synthetic 3930-shaped home contents wrapper keeps a positive mount above a
   const empty=await read();assert.equal(empty.contract,true,JSON.stringify(empty));assert.equal(empty.page,'home',JSON.stringify(empty));assert.equal(empty.character,1,JSON.stringify(empty));
   await page.production(theme.expression);
   const compactBeforeApply=await page.evaluate(`(()=>{const editor=document.getElementById('native-editor');editor.textContent='Synthetic draft line one\\nline two';editor.dispatchEvent(new Event('input',{bubbles:true}));document.documentElement.dataset.ctView='home-compact';const root=document.getElementById('native-flex-root').getBoundingClientRect(),body=document.querySelector('[data-composer-body]').getBoundingClientRect(),direct=(${resolveActiveSurface.toString()})(${JSON.stringify(adapter)},'eligible');return {rootTop:root.top,rootBottom:root.bottom,bodyTop:body.top,bodyBottom:body.bottom,direct:{ok:direct.ok,reason:direct.reason}};})()`);
+  // Native structural mutations can request a full apply after compact layout
+  // has hidden the hero. Reapplying must not erase the region keeping input low.
+  await page.production(theme.expression);
   const trace=[];for(let i=0;i<16;i++){trace.push(await read());await page.evaluate('new Promise(r=>setTimeout(r,200))');}
   const placement=await page.evaluate(`(()=>({heroSlot:document.getElementById('native-hero').dataset.ctSlot,sourceSlot:document.querySelector('.text-center.select-none').dataset.ctSlot,stageId:document.querySelector('[data-ct-slot="home.stage"]')?.id??null,composerSlot:document.getElementById('native-composer-region').dataset.ctSlot}))()`);
   await page.production(restoreExpression(session));await page.production(updateExpression(false));await page.production(removeControllerExpression(session+1));
